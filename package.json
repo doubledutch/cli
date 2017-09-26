@@ -32,6 +32,7 @@
     "chalk": "^2.1.0",
     "commander": "^2.11.0",
     "diff-match-patch": "^1.0.0",
+    "firebase": "^4.4.0",
     "fs-extra": "^4.0.2",
     "inquirer": "^3.3.0",
     "superagent": "^3.6.0",
