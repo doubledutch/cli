@@ -12,6 +12,11 @@ program
   .action(require('./init'))
 
 program
+  .command('login')
+  .description('sets your doubledutch developer account credentials')
+  .action(require('./login'))
+
+program
   .command('publish')
   .description('publishes the DoubleDutch feature in the current folder')
   .action(require('./publish'))

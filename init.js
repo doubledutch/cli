@@ -64,7 +64,7 @@ const makeLink = (module) =>
 const doubledutchSH = (projectName, buildSettings) => `\
 #!/usr/bin/env bash
 date
-echo Making '${projectName}'
+echo Initializing '${chalk.blue(projectName)}'
 yarn
 git clone https://github.com/doubledutch/feature-sample.git tmp
 rm -rf tmp/.git

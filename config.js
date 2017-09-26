@@ -3,7 +3,7 @@ module.exports = {
   reactNativeVersion: '0.46.4',
   baseBundleVersion: '0.46.4',
   identity: {
-    root_url: 'https://us-identity.doubledutch.me',
+    rootUrl: 'https://us-identity.doubledutch.me',
     cli: {
       identifier: "2PJo2PmCAb8S3RD8MuSJpg",
       secret: "XcfoLiuzSNRgVbSH7ZZCmjhyqSqwr6iNApXc7LNTMFak",
