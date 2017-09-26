@@ -6,7 +6,7 @@ const pkg = require('./package.json')
 updateNotifier({pkg}).notify()
 
 // Parse CLI
-const program = require('commander').name('dd').version(pkg.version)
+const program = require('commander').name('doubledutch').version(pkg.version)
 
 program
   .command('init')

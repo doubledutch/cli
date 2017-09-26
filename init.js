@@ -1,4 +1,5 @@
 const fs = require('fs')
+const { removeSync } = require('fs-extra')
 const path = require('path')
 const { spawn } = require('child_process')
 const chalk = require('chalk')
@@ -21,8 +22,11 @@ module.exports = function init(cmd, options) {
 
     return new Promise((resolve, reject) => {
       spawn('./doubledutch.sh', [], {shell: true, stdio: 'inherit'}).on('exit', (code, signal) => {
-        fs.symlinkSync('mobile/doubledutch.json', 'doubledutch.json')
         console.log('Finished creating project')
+        fs.unlinkSync('./doubledutch.sh')
+        fs.unlinkSync('./yarn.lock')
+        removeSync('./node_modules')
+        removeSync('./tmp')
         resolve()      
       })  
     })
@@ -52,6 +56,9 @@ const makePackageJSON = (projectName) => `\
     "react-native-cli": "^2.0.1"
   },
   "devDependencies": {
+  },
+  "doubledutch": {
+    "feature": true
   }
 }
 `
@@ -66,6 +73,7 @@ const doubledutchSH = (projectName, buildSettings) => `\
 date
 echo Initializing '${chalk.green(projectName)}'
 yarn
+echo ${chalk.green('Cloning sample')}
 git clone https://github.com/doubledutch/feature-sample.git tmp
 rm -rf tmp/.git
 shopt -s dotglob && mv tmp/* ./
@@ -77,7 +85,6 @@ mkdir mobile/ios
 mv tmp/${projectName}/ios/* mobile/ios/
 mkdir mobile/android
 mv tmp/${projectName}/android/* mobile/android/
-mv doubledutch.json mobile/doubledutch.json
 cd mobile
 sed -i '' 's/feature-sample/${projectName}/' package.json
 sed -i '' 's/feature-sample/${projectName}/' index.ios.js
@@ -156,18 +163,6 @@ const populateDir = (projectName, buildSettings) => {
     console.info(`Created package.json`)
   } else {
     console.info('package.json already exists, not modifying it.')
-  }
-
-  // Create bazaar.json if it doesn't exist
-  if (!fileExists('doubledutch.json')) {
-    fs.appendFileSync(
-      'doubledutch.json',
-      makeFeatureJSON(projectName, buildSettings),
-      permissionGeneral
-    )
-    console.info(`Created doubledutch.json`)
-  } else {
-    console.info('doubledutch.json already exists; not modifying it.')
   }
 
   if (!fileExists('doubledutch.sh')) {

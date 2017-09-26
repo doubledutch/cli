@@ -17,13 +17,15 @@ module.exports = function publish(cmd, options) {
   const iosBaseManifest = `https://dd-bazaar.s3.amazonaws.com/lib/bundles/base.ios.${config.baseBundleVersion}.manifest`
   const androidBaseManifest = `https://dd-bazaar.s3.amazonaws.com/lib/bundles/base.android.${config.baseBundleVersion}.manifest`
   
-  if (!fileExists('doubledutch.json')) return console.log('This does not appear to be a doubledutch feature project. doubledutch.json not found')
+  if (!fileExists('package.json')) return console.log('This does not appear to be a doubledutch feature project. No package.json found.')
+  const featurePackageJSON = JSON.parse(fs.readFileSync('package.json', 'utf8'))
+
+  if (!featurePackageJSON.doubledutch) return console.log('This does not appear to be the root folder of a DoubleDutch feature project. package.json does not have a doubledutch section.')
   if (!fileExists(ddConfig)) return console.log('You have not logged in to doubledutch. Please run ' + chalk.blue('dd login'))
 
   const configJSON = JSON.parse(fs.readFileSync(ddConfig, 'utf8'))
-  const featureJSON = JSON.parse(fs.readFileSync('doubledutch.json', 'utf8'))
 
-  return publishBinary(configJSON, featureJSON, pkg)
+  return publishBinary(configJSON, featurePackageJSON.doubledutch, pkg)
     .then(result => console.log(result))
     .catch(err => console.error(err))
 }
@@ -32,11 +34,6 @@ function publishBinary(accountConfig, ddJson, packageJSON) {
   const featureName = packageJSON.name
   // TODO - we should really just check the expiration of the token
   return requestAccessToken(accountConfig.username, accountConfig.refresh_token).then(accessToken => {
-    const featureURL = config.root_url + '/api/features' + (featureName ? ('/' + featureName) : '')
-
-    // TODO - set this on server based on token
-    ddJson.developer = { name: '', email: accountConfig.username, phone: '' }
-
     console.log(`Downloading iOS and Android base bundles (version ${chalk.blue(config.baseBundleVersion)})`)
     return Promise.all([
       promisify(request.get(iosBaseBundle), 'end').then(res => res.text),
@@ -81,7 +78,7 @@ function publishBinary(accountConfig, ddJson, packageJSON) {
 
       const commands = []
 
-      if (ddJson.components.mobile.enabled) {
+      if (fs.existsSync('mobile')) {
         commands.push(
           //[`pushd mobile && npm run build-web`, 'Generating Web feature bundle'],
           //[`pushd mobile && cp -r web/static/ ../build/bundle/`, 'Copying Web feature bundle'],
@@ -114,29 +111,29 @@ function publishBinary(accountConfig, ddJson, packageJSON) {
         )
       } else {
         commands.push(
-          [``, chalk.yellow('Mobile build not enabled')]
+          [``, chalk.yellow('mobile folder not found. Skipping build.')]
         )
       }
 
-      if (ddJson.components.adminWeb.enabled) {
+      if (fileExists('web/admin')) {
         commands.push(
           [`pushd web/admin && npm run build`, chalk.blue('Generating Admin web bundle')],
           [`cp -r web/admin/build/ build/site/private/`, chalk.blue('Copying Admin web bundle')]
         )
       } else {
         commands.push(
-          [``, chalk.yellow('Admin web build not enabled')]
+          [``, chalk.yellow('web/admin folder not found. Skipping build.')]
         )
       }
 
-      if (ddJson.components.attendeeWeb.enabled) {
+      if (fileExists('web/attendee')) {
         commands.push(
           [`pushd web/attendee && npm run build`, chalk.blue('Generating Attendee web bundle')],
           [`cp -r web/attendee/build/ build/site/public/`, chalk.blue('Copying Attendee web bundle')]
         )
       } else {
         commands.push(
-          [``, chalk.yellow('Attendee web build not enabled')]
+          [``, chalk.yellow('web/attendee folder not found. Skipping build.')]
         )
       }
 
