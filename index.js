@@ -1,0 +1,19 @@
+// Notify user of any updates to the CLI
+const updateNotifier = require('update-notifier')
+const pkg = require('./package.json')
+updateNotifier({pkg}).notify()
+
+// Parse CLI
+const program = require('commander').name('dd').version(pkg.version)
+
+program
+  .command('init')
+  .description('initializes a new DoubleDutch feature in the current empty folder')
+  .action(require('./init'))
+
+program
+  .command('publish')
+  .description('publishes the DoubleDutch feature in the current folder')
+  .action(require('./publish'))
+
+program.parse(process.argv.length > 2 ? process.argv : [...process.argv, '--help'])

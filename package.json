@@ -1,0 +1,36 @@
+{
+  "name": "@doubledutch/cli",
+  "version": "1.0.0",
+  "description": "DoubleDutch developer command-line interface. Install globally.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "dd": "index.js",
+    "doubledutch": "index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/doubledutch/cli.git"
+  },
+  "keywords": [
+    "DoubleDutch",
+    "cli",
+    "command",
+    "line",
+    "developer"
+  ],
+  "author": "DoubleDutch",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/doubledutch/cli/issues"
+  },
+  "homepage": "https://github.com/doubledutch/cli#readme",
+  "dependencies": {
+    "chalk": "^2.1.0",
+    "commander": "^2.11.0",
+    "inquirer": "^3.3.0",
+    "update-notifier": "^2.2.0"
+  }
+}
