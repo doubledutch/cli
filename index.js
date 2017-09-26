@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 // Notify user of any updates to the CLI
 const updateNotifier = require('update-notifier')
 const pkg = require('./package.json')

@@ -10,6 +10,7 @@
     "dd": "index.js",
     "doubledutch": "index.js"
   },
+  "man": "./man/dd.1",
   "repository": {
     "type": "git",
     "url": "git://github.com/doubledutch/cli.git"

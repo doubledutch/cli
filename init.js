@@ -17,7 +17,7 @@ module.exports = function init(cmd, options) {
     const projectName = path.parse(process.cwd()).name
     populateDir(projectName, buildSettings)
 
-    console.log(chalk.blue('Initializing project. This may take a few minutes...'))
+    console.log(chalk.green('Initializing project. This may take a few minutes...'))
 
     return new Promise((resolve, reject) => {
       spawn('./doubledutch.sh', [], {shell: true, stdio: 'inherit'}).on('exit', (code, signal) => {
@@ -64,7 +64,7 @@ const makeLink = (module) =>
 const doubledutchSH = (projectName, buildSettings) => `\
 #!/usr/bin/env bash
 date
-echo Initializing '${chalk.blue(projectName)}'
+echo Initializing '${chalk.green(projectName)}'
 yarn
 git clone https://github.com/doubledutch/feature-sample.git tmp
 rm -rf tmp/.git
