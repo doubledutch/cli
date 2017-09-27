@@ -38,6 +38,9 @@ function publishBinary(accountConfig, packageJSON) {
   if (!featureName.match(/^[a-zA-Z0-9\-_]+$/)) {
     return Promise.reject(`Feature name in package.json (${featureName}) is not valid. Letters, numbers, -, and _ are valid.`)
   }
+
+  console.log(`Publishing ${chalk.green(featureName)}@${chalk.green(packageJSON.version)}`)
+
   // TODO - we should really just check the expiration of the token
   return requestAccessToken(accountConfig.username, accountConfig.refresh_token).then(accessToken => {    
     const dmp = new DiffMatchPatch()
