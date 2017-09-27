@@ -91,7 +91,8 @@ pushd mobile
 sed -i '' 's/feature-sample/${projectName}/' package.json
 sed -i '' 's/feature-sample/${projectName}/' index.ios.js
 sed -i '' 's/feature-sample/${projectName}/' index.android.js
-sed -i '' 's/v/${projectName}/' index.web.js
+sed -i '' 's/feature-sample/${projectName}/' index.web.js
+sed -i '' 's/feature-sample/${projectName}/' src/home-view.js
 yarn
 echo 'Fixing up xcode to use DD packager'
 sed -i.bak s/node_modules\\\\/react-native\\\\/packager/node_modules\\\\/dd-rn-packager\\\\/react-native\\\\/packager/g ios/${projectName}.xcodeproj/project.pbxproj
