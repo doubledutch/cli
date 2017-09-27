@@ -14,6 +14,11 @@ program
   .action(require('./init'))
 
 program
+  .command('install <eventID>')
+  .description('installs the DoubleDutch feature to an event')
+  .action(require('./install'))
+
+program
   .command('login')
   .description('sets your doubledutch developer account credentials')
   .action(require('./login'))

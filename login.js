@@ -8,8 +8,9 @@ const { ddHome, ddConfig, fileExists, promisify, saveConfig } = require('./utils
 module.exports = function login(cmd, options) {
   let promise
   if (fileExists(ddConfig)) {
-    const configJSON = JSON.parse(fs.readFileSync(ddConfig, 'utf8'))
-    promise = inquirer.prompt([{ type: 'confirm', name: 'confirm', message: `Already authenticated as ${configJSON.username}. Overwrite?`, default: true }])
+    let configJSON
+    try { configJSON = JSON.parse(fs.readFileSync(ddConfig, 'utf8')) } catch (e) { configJSON = { username: '<unknown>' } }
+    promise = inquirer.prompt([{ type: 'confirm', name: 'confirm', message: `Already authenticated as ${chalk.blue(configJSON.username)}. Overwrite?`, default: true }])
       .then(result => result.confirm && promptAndLogin())
   } else {
     promise = promptAndLogin()

@@ -10,8 +10,8 @@ module.exports = {
       request.get(`${firebase.functions}/adminToken?event=${eventId}&region=us`)
       .set('authorization', `Bearer ${ddToken}`)
       .end((err, res) => {
+        if (err && err.status === 401) return reject('Unauthorized')
         if (err) return reject(err)
-        if (res.status === 401) return reject('Unauthorized')
         resolve(res.text)
       })
     })

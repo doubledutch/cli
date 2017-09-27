@@ -1,81 +1,84 @@
 const fs = require('fs')
+const { exec } = require('child_process')
 const { removeSync } = require('fs-extra')
 const path = require('path')
 const request = require('superagent')
 const chalk = require('chalk')
 const config = require('./config')
 const pkg = require('./package.json')
-const { ddHome, ddConfig, fileExists, promisify, requireHome, saveConfig } = require('./utils')
+const { ddHome, ddConfig, fileExists, promisify, requestAccessToken, saveConfig } = require('./utils')
 const DiffMatchPatch = require('diff-match-patch')
 const firebaseUtils = require('./utils/firebase')
-const firebase = require('firebase/app')
-require('firebase/storage')
+const firebase = require('firebase')
 
-module.exports = function publish(cmd, options) {
-  const iosBaseBundle = `https://dd-bazaar.s3.amazonaws.com/lib/bundles/base.ios.${config.baseBundleVersion}.bundle?raw=true`
-  const androidBaseBundle = `https://dd-bazaar.s3.amazonaws.com/lib/bundles/base.android.${config.baseBundleVersion}.bundle?raw=true`
-  const iosBaseManifest = `https://dd-bazaar.s3.amazonaws.com/lib/bundles/base.ios.${config.baseBundleVersion}.manifest`
-  const androidBaseManifest = `https://dd-bazaar.s3.amazonaws.com/lib/bundles/base.android.${config.baseBundleVersion}.manifest`
-  
+const bundleBase = `https://firebasestorage.googleapis.com/v0/b/${config.firebase.storageBucket}/o/lib%2Fbundles%2F`
+
+// TODO: Is this needed?
+// const iosBaseBundle = `${bundleBase}base.ios.${config.baseBundleVersion}.bundle?alt=media`
+// const androidBaseBundle = `${bundleBase}base.android.${config.baseBundleVersion}.bundle?alt=media`
+const iosBaseManifest = `${bundleBase}base.ios.${config.baseBundleVersion}.manifest?alt=media`
+const androidBaseManifest = `${bundleBase}base.android.${config.baseBundleVersion}.manifest?alt=media`
+
+module.exports = function publish(cmd, options) {  
   if (!fileExists('package.json')) return console.log('This does not appear to be a doubledutch feature project. No package.json found.')
   const featurePackageJSON = JSON.parse(fs.readFileSync('package.json', 'utf8'))
-
   if (!featurePackageJSON.doubledutch) return console.log('This does not appear to be the root folder of a DoubleDutch feature project. package.json does not have a doubledutch section.')
+
   if (!fileExists(ddConfig)) return console.log('You have not logged in to doubledutch. Please run ' + chalk.blue('dd login'))
 
   const configJSON = JSON.parse(fs.readFileSync(ddConfig, 'utf8'))
 
-  return publishBinary(configJSON, featurePackageJSON.doubledutch, pkg)
+  return publishBinary(configJSON, featurePackageJSON)
     .then(result => console.log(result))
     .catch(err => console.error(err))
 }
 
-function publishBinary(accountConfig, ddJson, packageJSON) {
+function publishBinary(accountConfig, packageJSON) {
   const featureName = packageJSON.name
+  if (!featureName.match(/^[a-zA-Z0-9\-_]+$/)) {
+    return Promise.reject(`Feature name in package.json (${featureName}) is not valid. Letters, numbers, -, and _ are valid.`)
+  }
   // TODO - we should really just check the expiration of the token
-  return requestAccessToken(accountConfig.username, accountConfig.refresh_token).then(accessToken => {
-    console.log(`Downloading iOS and Android base bundles (version ${chalk.blue(config.baseBundleVersion)})`)
+  return requestAccessToken(accountConfig.username, accountConfig.refresh_token).then(accessToken => {    
+    const dmp = new DiffMatchPatch()
+    dmp.Diff_Timeout = 60
+
+    removeSync('build/')
+    removeSync('tmp/')
+
+    if (!fs.existsSync('build')) {
+      fs.mkdirSync('build');
+    }
+    if (!fs.existsSync('build/bundle')) {
+      fs.mkdirSync('build/bundle');
+    }
+    if (!fs.existsSync('build/site')) {
+      fs.mkdirSync('build/site');
+    }
+    if (!fs.existsSync('build/site/private')) {
+      fs.mkdirSync('build/site/private');
+    }
+    if (!fs.existsSync('build/site/public')) {
+      fs.mkdirSync('build/site/public');
+    }
+    if (!fs.existsSync('build/api')) {
+      fs.mkdirSync('build/api');
+    }
+    if (!fs.existsSync('tmp')) {
+      fs.mkdirSync('tmp');
+    }
+
+    console.log(`Downloading iOS and Android base bundles (version ${chalk.blue(config.baseBundleVersion)})`) 
+    function streamToFile(url, file) {
+      return new Promise((resolve, reject) => {
+        request.get(url).pipe(fs.createWriteStream(file)).on('finish', () => resolve(file))
+      })
+    }   
+    // TODO: Are the 2 other bundle files needed?
     return Promise.all([
-      promisify(request.get(iosBaseBundle), 'end').then(res => res.text),
-      promisify(request.get(androidBaseBundle), 'end').then(res => res.text),
-      promisify(request.get(iosBaseManifest), 'end').then(res => res.text),
-      promisify(request.get(androidBaseManifest), 'end').then(res => res.text)
-    ]).then((results) => {
-      const [iosBase, androidBase, iosManifest, androidManifest] = results
-      const dmp = new DiffMatchPatch()
-      dmp.Diff_Timeout = 60
-
-      removeSync('build/')
-      removeSync('tmp/')
-
-      if (!fs.existsSync('build')) {
-        fs.mkdirSync('build');
-      }
-      if (!fs.existsSync('build/bundle')) {
-        fs.mkdirSync('build/bundle');
-      }
-      if (!fs.existsSync('build/site')) {
-        fs.mkdirSync('build/site');
-      }
-      if (!fs.existsSync('build/site/private')) {
-        fs.mkdirSync('build/site/private');
-      }
-      if (!fs.existsSync('build/site/public')) {
-        fs.mkdirSync('build/site/public');
-      }
-      if (!fs.existsSync('build/api')) {
-        fs.mkdirSync('build/api');
-      }
-      if (!fs.existsSync('tmp')) {
-        fs.mkdirSync('tmp');
-      }
-
-      fs.writeFileSync(`tmp/base.ios.${config.baseBundleVersion}.bundle`, iosBase, { encoding: 'utf8' })
-      fs.writeFileSync(`tmp/base.android.${config.baseBundleVersion}.bundle`, androidBase, { encoding: 'utf8' })
-
-      fs.writeFileSync(`tmp/base.ios.${config.baseBundleVersion}.manifest`, iosManifest, { encoding: 'utf8' })
-      fs.writeFileSync(`tmp/base.android.${config.baseBundleVersion}.manifest`, androidManifest, { encoding: 'utf8' })
-
+      streamToFile(iosBaseManifest, `tmp/base.ios.${config.baseBundleVersion}.manifest`),
+      streamToFile(androidBaseManifest, `tmp/base.android.${config.baseBundleVersion}.manifest`)
+    ]).then(results => {
       const commands = []
 
       if (fs.existsSync('mobile')) {
@@ -122,7 +125,7 @@ function publishBinary(accountConfig, ddJson, packageJSON) {
         )
       } else {
         commands.push(
-          [``, chalk.yellow('web/admin folder not found. Skipping build.')]
+          [`echo skipping web/admin`, chalk.yellow('web/admin folder not found. Skipping build.')]
         )
       }
 
@@ -146,15 +149,19 @@ function publishBinary(accountConfig, ddJson, packageJSON) {
         const runCommand = (idx) => {
           if (idx < commands.length) {
             console.log(`${commands[idx][1]}...`)
-            exec(commands[idx][0].replace(/\n/g, ''), (err, stdout, stderr) => {
-              if (err) {
-                console.error(err)
-              }
-              if (stderr) {
-                console.error(stderr)
-              }
+            if (commands[idx][0]) {
+              exec(commands[idx][0].replace(/\n/g, ''), (err, stdout, stderr) => {
+                if (err) {
+                  console.error(err)
+                }
+                if (stderr) {
+                  console.error(stderr)
+                }
+                runCommand(idx + 1)
+              })
+            } else {
               runCommand(idx + 1)
-            })
+            }
           } else {
             resolve()
           }
@@ -171,7 +178,6 @@ function publishBinary(accountConfig, ddJson, packageJSON) {
         mobileURL: `https://firebasestorage.googleapis.com/v0/b/bazaar-179323.appspot.com/o/features%2F${encodeURIComponent(featureName)}%2F${encodeURIComponent(version)}%2Fmobile%2Findex.__platform__.0.46.4.manifest.bundle?module=${encodeURIComponent(featureName)}&alt=media#plugin`
       }
 
-
       return promise
         .then(() => firebaseUtils.getDeveloperToken(accessToken))
         .then(firebaseToken => firebase.auth().signInWithCustomToken(firebaseToken))
@@ -179,9 +185,9 @@ function publishBinary(accountConfig, ddJson, packageJSON) {
         .then(firebaseIdToken => {
           console.log('Done. Uploading binaries...')
           const location = `users/${firebase.auth().currentUser.uid}/staged/binaries/${featureName}/${json.version}/build.zip`
-          
+          console.log(location)
           return new Promise((resolve, reject) => {
-            superagent.post(`https://firebasestorage.googleapis.com/v0/b/${config.firebase.storageBucket}/o?name=${encodeURIComponent(location)}`)
+            request.post(`https://firebasestorage.googleapis.com/v0/b/${config.firebase.storageBucket}/o?name=${encodeURIComponent(location)}`)
             .attach('metadata', Buffer.from(JSON.stringify({name: location, contentType: 'application/octet-stream'}), 'utf8'))
             .attach(location, `tmp/build.${config.baseBundleVersion}.zip`)
             .set('x-goog-upload-protocol', 'multipart')
@@ -194,24 +200,10 @@ function publishBinary(accountConfig, ddJson, packageJSON) {
             })
           })
         })
-        .catch((err) => {
-          console.log(err)
-          process.exit(-1)
-        })
+    }).catch((err) => {
+      console.log(typeof err === 'string' ? chalk.red(err) : err)
+      process.exit(-1)
     })
   })
 }
 
-function requestAccessToken(username, refresh_token) {
-  return promisify(request.post(`${config.identity.rootUrl}/access/tokens`)
-    .auth(config.identity.cli.identifier, config.identity.cli.secret)
-    .type('form')
-    .send({ grant_type: 'refresh_token', refresh_token: refresh_token }))
-    .then(res => {
-      if (!res.ok) throw 'Invalid credentials. Please run ' + chalk.blue('dd login')
-      return res.json()
-    }).then(result => {
-      saveConfig(username, result)
-      return result.access_token
-    })
-}

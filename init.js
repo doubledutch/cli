@@ -73,41 +73,41 @@ const doubledutchSH = (projectName, buildSettings) => `\
 date
 echo Initializing '${chalk.green(projectName)}'
 yarn
-echo ${chalk.green('Cloning sample')}
+echo ${chalk.green('Cloning feature-sample')}
 git clone https://github.com/doubledutch/feature-sample.git tmp
 rm -rf tmp/.git
 shopt -s dotglob && mv tmp/* ./
-cd tmp
+${buildSettings.mobile ? `\
+echo ${chalk.green('Initializing React Native project')}
+pushd tmp
 node ../node_modules/react-native-cli/index.js init ${projectName} --version react-native@${reactNativeVersion}
-cd ..
+popd
 mkdir mobile
 mkdir mobile/ios
 mv tmp/${projectName}/ios/* mobile/ios/
 mkdir mobile/android
 mv tmp/${projectName}/android/* mobile/android/
-cd mobile
+pushd mobile
 sed -i '' 's/feature-sample/${projectName}/' package.json
 sed -i '' 's/feature-sample/${projectName}/' index.ios.js
 sed -i '' 's/feature-sample/${projectName}/' index.android.js
 sed -i '' 's/v/${projectName}/' index.web.js
 yarn
-#rm -rf node_modules/bazaar-client/node_modules/react-native/
 echo 'Fixing up xcode to use DD packager'
 sed -i.bak s/node_modules\\\\/react-native\\\\/packager/node_modules\\\\/dd-rn-packager\\\\/react-native\\\\/packager/g ios/${projectName}.xcodeproj/project.pbxproj
 sed -i.bak s/packager\\\\/launchPackager.command/..\\\\/dd-rn-packager\\\\/react-native\\\\/packager\\\\/launchPackager.command/g node_modules/react-native/React/React.xcodeproj/project.pbxproj
-cd ..
-echo rm -rf tmp
-echo Installing dependencies
-pushd mobile
-${buildSettings.mobile ? 'yarn' : ''}
-${buildSettings.mobile ? makeLinks() : ''}
-popd
+echo ${chalk.green('Installing mobile dependencies')}
+yarn
+${makeLinks()}
+popd` : `echo ${chalk.yellow('mobile disabled')}; rm -rf mobile`}
+${buildSettings.adminWeb ? `\
 pushd web/admin
-${buildSettings.adminWeb ? 'yarn' : ''}
-popd
+yarn
+popd` : `echo ${chalk.yellow('web/admin disabled')}; rm -rf web/admin`}
+${buildSettings.attendeeWeb ? `\
 pushd web/attendee
-${buildSettings.attendeeWeb ? 'yarn' : ''}
-popd
+yarn
+popd` : `echo ${chalk.yellow('web/attendee disabled')}; rm -rf web/attendee`}
 date
 `
 
