@@ -36,7 +36,7 @@ function promisify(fn, fnName = null) {
 }
 
 function saveConfig(username, tokenResponse) {
-  const config = { ...tokenResponse, username }
+  const config = Object.assign({}, tokenResponse, {username})
   fs.writeFileSync(ddConfig, JSON.stringify(config))
   return config
 }
