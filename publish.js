@@ -188,7 +188,6 @@ function publishBinary(accountConfig, packageJSON) {
         .then(firebaseIdToken => {
           console.log('Done. Uploading binaries...')
           const location = `users/${firebase.auth().currentUser.uid}/staged/binaries/${featureName}/${json.version}/build.zip`
-          console.log(location)
           return new Promise((resolve, reject) => {
             request.post(`https://firebasestorage.googleapis.com/v0/b/${config.firebase.storageBucket}/o?name=${encodeURIComponent(location)}`)
             .attach('metadata', Buffer.from(JSON.stringify({name: location, contentType: 'application/octet-stream'}), 'utf8'))
