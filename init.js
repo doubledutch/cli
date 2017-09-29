@@ -15,7 +15,7 @@ module.exports = function init(cmd, options) {
     { type: 'confirm', name: 'adminWeb', default: true, message: 'Create an admin web template?' },
     { type: 'confirm', name: 'attendeeWeb', default: false, message: 'Create an attendee web template?' }
   ]).then(buildSettings => {
-    const projectName = path.parse(process.cwd()).name
+    const projectName = path.parse(process.cwd()).name.replace(/[^a-zA-Z0-9]/g, '') // alphanumeric chars from folder name
     populateDir(projectName, buildSettings)
 
     console.log(chalk.green('Initializing project. This may take a few minutes...'))

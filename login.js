@@ -17,7 +17,7 @@ module.exports = function login(cmd, options) {
   }
 
   promise
-    .then(result => console.log(chalk.green(`logged in to DoubleDutch as ${result.username}`)))
+    .then(result => result.username && console.log(chalk.green(`logged in to DoubleDutch as ${result.username}`)))
     .catch(err => console.error(typeof err === 'string' ? chalk.yellow(err) : err))
 }
 
