@@ -1,9 +1,9 @@
 @doubledutch/cli
 ================
 
-Build DoubleDutch features with React Native
+Build DoubleDutch extensions with React Native
 
-Currently, DoubleDutch developer tools for React Native features are only supported on Mac OS X.
+Currently, DoubleDutch developer tools for React Native extensions are only supported on Mac OS X.
 
 ### Prerequisites
 
@@ -43,11 +43,11 @@ npm run ios
 ### Commands
 
 ```
-init               initializes a new DoubleDutch feature in the current empty folder
+init               initializes a new DoubleDutch extension in the current empty folder
 
-install <eventID>  installs the DoubleDutch feature to an event
+install <eventID>  installs the DoubleDutch extension to an event
 
 login              sets your DoubleDutch developer account credentials
 
-publish            publishes the DoubleDutch feature in the current folder
+publish            publishes the DoubleDutch extension in the current folder
 ```

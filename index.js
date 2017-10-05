@@ -10,12 +10,12 @@ const program = require('commander').name('doubledutch').version(pkg.version)
 
 program
   .command('init')
-  .description('initializes a new DoubleDutch feature in the current empty folder')
+  .description('initializes a new DoubleDutch extension in the current empty folder')
   .action(require('./init'))
 
 program
   .command('install <eventID>')
-  .description('installs the DoubleDutch feature to an event')
+  .description('installs the DoubleDutch extension to an event')
   .action(require('./install'))
 
 program
@@ -25,7 +25,7 @@ program
 
 program
   .command('publish')
-  .description('publishes the DoubleDutch feature in the current folder')
+  .description('publishes the DoubleDutch extension in the current folder')
   .action(require('./publish'))
 
 program.parse(process.argv.length > 2 ? process.argv : [...process.argv, '--help'])

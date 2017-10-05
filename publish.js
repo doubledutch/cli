@@ -20,26 +20,26 @@ const iosBaseManifest = `${bundleBase}base.ios.${config.baseBundleVersion}.manif
 const androidBaseManifest = `${bundleBase}base.android.${config.baseBundleVersion}.manifest?alt=media`
 
 module.exports = function publish(cmd, options) {  
-  if (!fileExists('package.json')) return console.log('This does not appear to be a doubledutch feature project. No package.json found.')
-  const featurePackageJSON = JSON.parse(fs.readFileSync('package.json', 'utf8'))
-  if (!featurePackageJSON.doubledutch) return console.log('This does not appear to be the root folder of a DoubleDutch feature project. package.json does not have a doubledutch section.')
+  if (!fileExists('package.json')) return console.log('This does not appear to be a doubledutch extension project. No package.json found.')
+  const extensionPackageJSON = JSON.parse(fs.readFileSync('package.json', 'utf8'))
+  if (!extensionPackageJSON.doubledutch) return console.log('This does not appear to be the root folder of a DoubleDutch extension project. package.json does not have a doubledutch section.')
 
   if (!fileExists(ddConfig)) return console.log('You have not logged in to doubledutch. Please run ' + chalk.blue('dd login'))
 
   const configJSON = JSON.parse(fs.readFileSync(ddConfig, 'utf8'))
 
-  return publishBinary(configJSON, featurePackageJSON)
+  return publishBinary(configJSON, extensionPackageJSON)
     .then(result => console.log(result))
     .catch(err => console.error(err))
 }
 
 function publishBinary(accountConfig, packageJSON) {
-  const featureName = packageJSON.name
-  if (!featureName.match(/^[a-zA-Z0-9\-_]+$/)) {
-    return Promise.reject(`Feature name in package.json (${featureName}) is not valid. Letters, numbers, -, and _ are valid.`)
+  const extensionName = packageJSON.name
+  if (!extensionName.match(/^[a-zA-Z0-9\-_]+$/)) {
+    return Promise.reject(`Extension name in package.json (${extensionName}) is not valid. Letters, numbers, -, and _ are valid.`)
   }
 
-  console.log(`Publishing feature ${chalk.green(featureName)}@${chalk.green(packageJSON.version)} to DoubleDutch...`)
+  console.log(`Publishing extension ${chalk.green(extensionName)}@${chalk.green(packageJSON.version)} to DoubleDutch...`)
 
   // TODO - we should really just check the expiration of the token
   return requestAccessToken(accountConfig.username, accountConfig.refresh_token).then(accessToken => {    
@@ -86,8 +86,8 @@ function publishBinary(accountConfig, packageJSON) {
 
       if (fs.existsSync('mobile')) {
         commands.push(
-          //[`pushd mobile && npm run build-web`, 'Generating Web feature bundle'],
-          //[`pushd mobile && cp -r web/static/ ../build/bundle/`, 'Copying Web feature bundle'],
+          //[`pushd mobile && npm run build-web`, 'Generating Web extension bundle'],
+          //[`pushd mobile && cp -r web/static/ ../build/bundle/`, 'Copying Web extension bundle'],
           [`
             pushd mobile &&
             node node_modules/dd-rn-packager/react-native/local-cli/cli.js bundle 
@@ -178,7 +178,7 @@ function publishBinary(accountConfig, packageJSON) {
         cliVersion: pkg.version,
         version,
         reactNativeVersion: config.baseBundleVersion,
-        mobileURL: `https://firebasestorage.googleapis.com/v0/b/bazaar-179323.appspot.com/o/features%2F${encodeURIComponent(featureName)}%2F${encodeURIComponent(version)}%2Fmobile%2Findex.__platform__.0.46.4.manifest.bundle?module=${encodeURIComponent(featureName)}&alt=media#plugin`
+        mobileURL: `https://firebasestorage.googleapis.com/v0/b/bazaar-179323.appspot.com/o/extensions%2F${encodeURIComponent(extensionName)}%2F${encodeURIComponent(version)}%2Fmobile%2Findex.__platform__.0.46.4.manifest.bundle?module=${encodeURIComponent(extensionName)}&alt=media#plugin`
       }
 
       return promise
@@ -187,7 +187,7 @@ function publishBinary(accountConfig, packageJSON) {
         .then(user => user.getIdToken())
         .then(firebaseIdToken => {
           console.log('Done. Uploading binaries...')
-          const location = `users/${firebase.auth().currentUser.uid}/staged/binaries/${featureName}/${json.version}/build.zip`
+          const location = `users/${firebase.auth().currentUser.uid}/staged/binaries/${extensionName}/${json.version}/build.zip`
           return new Promise((resolve, reject) => {
             request.post(`https://firebasestorage.googleapis.com/v0/b/${config.firebase.storageBucket}/o?name=${encodeURIComponent(location)}`)
             .attach('metadata', Buffer.from(JSON.stringify({name: location, contentType: 'application/octet-stream'}), 'utf8'))

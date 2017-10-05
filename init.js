@@ -58,7 +58,7 @@ const makePackageJSON = (projectName) => `\
   "devDependencies": {
   },
   "doubledutch": {
-    "feature": true
+    "extension": true
   }
 }
 `
@@ -73,8 +73,8 @@ const doubledutchSH = (projectName, buildSettings) => `\
 date
 echo Initializing '${chalk.green(projectName)}'
 yarn
-echo ${chalk.green('Cloning feature-sample')}
-git clone https://github.com/doubledutch/feature-sample.git tmp
+echo ${chalk.green('Cloning extension-sample')}
+git clone https://github.com/doubledutch/extension-sample.git tmp
 rm -rf tmp/.git
 shopt -s dotglob && mv tmp/* ./
 ${buildSettings.mobile ? `\
@@ -88,11 +88,11 @@ mv tmp/${projectName}/ios/* mobile/ios/
 mkdir mobile/android
 mv tmp/${projectName}/android/* mobile/android/
 pushd mobile
-sed -i '' 's/feature-sample/${projectName}/' package.json
-sed -i '' 's/feature-sample/${projectName}/' index.ios.js
-sed -i '' 's/feature-sample/${projectName}/' index.android.js
-sed -i '' 's/feature-sample/${projectName}/' index.web.js
-sed -i '' 's/feature-sample/${projectName}/' src/home-view.js
+sed -i '' 's/extension-sample/${projectName}/' package.json
+sed -i '' 's/extension-sample/${projectName}/' index.ios.js
+sed -i '' 's/extension-sample/${projectName}/' index.android.js
+sed -i '' 's/extension-sample/${projectName}/' index.web.js
+sed -i '' 's/extension-sample/${projectName}/' src/home-view.js
 yarn
 echo 'Fixing up xcode to use DD packager'
 sed -i.bak s/node_modules\\\\/react-native\\\\/packager/node_modules\\\\/dd-rn-packager\\\\/react-native\\\\/packager/g ios/${projectName}.xcodeproj/project.pbxproj
@@ -110,35 +110,6 @@ pushd web/attendee
 yarn
 popd` : `echo ${chalk.yellow('web/attendee disabled')}; rm -rf web/attendee`}
 date
-`
-
-const makeFeatureJSON = (projectName, buildSettings) => `\
-{
-  "name": "${projectName}",
-  "version": "0.0.1",
-  "baseBundleVersion": "${baseBundleVersion}",
-  "description": "Description for ${projectName}",
-  "components": {
-    "mobile": {
-      "enabled": ${buildSettings.mobile},
-      "build": true
-    },
-    "adminWeb": {
-      "enabled": ${buildSettings.adminWeb},
-      "build": true,
-      "customURL": ""
-    },
-    "attendeeWeb": {
-      "enabled": ${buildSettings.attendeeWeb},
-      "build": true,
-      "customURL": ""
-    }
-  }
-}
-`
-
-const gitignore = () => `\
-node_modules
 `
 
 const fileExists = (pathName) => {
