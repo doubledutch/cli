@@ -48,14 +48,12 @@ const makePackageJSON = (projectName) => `\
   "private": true,
   "scripts": {
     "start": "react-native start",
-    "run" : "node_modules/react-native/local-cli/cli.js run-ios"
+    "run": "node_modules/react-native/local-cli/cli.js run-ios"
   },
   "dependencies": {
     "react": "${reactVersion}",
     "react-native": "${reactNativeVersion}",
     "react-native-cli": "^2.0.1"
-  },
-  "devDependencies": {
   },
   "doubledutch": {
     "extension": true
