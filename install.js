@@ -16,7 +16,7 @@ module.exports = function install(eventID) {
   process.stdout.write('Authenticating... ⏳  ')
   firebase.initializeApp(firebaseUtils.config)
   return requestAccessToken(accountConfig.username, accountConfig.refresh_token)
-  .then(access_token => firebaseUtils.getAdminToken(access_token, eventID))
+  .then(access_token => firebaseUtils.getAdminToken(access_token, eventID, extension))
   .then(firebaseToken => firebase.auth().signInWithCustomToken(firebaseToken))
   .then(() => clearAndLog('Authenticated ⭐'))
   .then(() => firebase.database().ref(`installs/${extension}/events/${eventID}`).set(true))
