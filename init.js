@@ -101,6 +101,7 @@ ${makeLinks()}
 popd` : `echo ${chalk.yellow('mobile disabled')}; rm -rf mobile`}
 ${buildSettings.adminWeb ? `\
 pushd web/admin
+sed -i '' 's/extension-sample/${projectName}/' src/App.js
 yarn
 popd` : `echo ${chalk.yellow('web/admin disabled')}; rm -rf web/admin`}
 ${buildSettings.attendeeWeb ? `\
