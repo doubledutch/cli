@@ -47,13 +47,7 @@ const makePackageJSON = (projectName) => `\
   "baseBundleVersion": "${baseBundleVersion}",
   "private": true,
   "scripts": {
-    "start": "react-native start",
-    "run": "node_modules/react-native/local-cli/cli.js run-ios"
-  },
-  "dependencies": {
-    "react": "${reactVersion}",
-    "react-native": "${reactNativeVersion}",
-    "react-native-cli": "^2.0.1"
+    "start": "pushd mobile && npm run ios && popd && pushd web/admin && npm start && popd"
   },
   "doubledutch": {
     "extension": true
