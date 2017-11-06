@@ -49,6 +49,11 @@ const makePackageJSON = (projectName) => `\
   "scripts": {
     "start": "pushd mobile && npm run ios && popd && pushd web/admin && npm start && popd"
   },
+  "dependencies": {
+    "react": "${reactVersion}",
+    "react-native": "${reactNativeVersion}",
+    "react-native-cli": "^2.0.1"
+  },
   "doubledutch": {
     "extension": true
   }
