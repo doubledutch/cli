@@ -67,6 +67,7 @@ const makeLink = (module) =>
 
 const doubledutchSH = (projectName, buildSettings) => `\
 #!/usr/bin/env bash
+if ! xcodebuild -checkFirstLaunchStatus ; then echo; echo "XCode EULA has not been accepted. Launch XCode and accept the license or run"; echo "xcodebuild -license accept"; echo; exit 1; fi
 date
 echo Initializing '${chalk.green(projectName)}'
 yarn
