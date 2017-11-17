@@ -98,6 +98,7 @@ sed -i.bak s/packager\\\\/launchPackager.command/..\\\\/dd-rn-packager\\\\/react
 echo ${chalk.green('Installing mobile dependencies')}
 yarn
 ${makeLinks()}
+node ./node_modules/rnpm/bin/cli link
 popd` : `echo ${chalk.yellow('mobile disabled')}; rm -rf mobile`}
 ${buildSettings.adminWeb ? `\
 pushd web/admin
