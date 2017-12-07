@@ -9,6 +9,7 @@ const pkg = require('./package.json')
 const { ddHome, ddConfig, fileExists, promisify, requestAccessToken, saveConfig } = require('./utils')
 const DiffMatchPatch = require('diff-match-patch')
 const firebaseUtils = require('./utils/firebase')
+const packager = require('./packager')
 const firebase = require('firebase')
 
 const bundleBase = `https://firebasestorage.googleapis.com/v0/b/${config.firebase.storageBucket}/o/lib%2Fbundles%2F`
@@ -81,45 +82,39 @@ function publishBinary(accountConfig, packageJSON) {
     return Promise.all([
       streamToFile(iosBaseManifest, `tmp/base.ios.${config.baseBundleVersion}.manifest`),
       streamToFile(androidBaseManifest, `tmp/base.android.${config.baseBundleVersion}.manifest`)
-    ]).then(results => {
-      const commands = []
-
+    ])
+    .then(() => {
       if (fs.existsSync('mobile')) {
-        commands.push(
-          //[`pushd mobile && npm run build-web`, 'Generating Web extension bundle'],
-          //[`pushd mobile && cp -r web/static/ ../build/bundle/`, 'Copying Web extension bundle'],
-          [`
-            pushd mobile &&
-            node node_modules/dd-rn-packager/react-native/local-cli/cli.js bundle 
-            --dev false
-            --manifest-file ../tmp/base.ios.${config.baseBundleVersion}.manifest
-            --manifest-output ../build/bundle/index.ios.${config.baseBundleVersion}.manifest
-            --platform ios
-            --entry-file index.ios.js
-            --bundle-output ../build/bundle/index.ios.${config.baseBundleVersion}.manifest.bundle
-            --sourcemap-output ../build/bundle/index.ios.${config.baseBundleVersion}.sourcemap
-            --post-process-modules $PWD/node_modules/dd-rn-packager/process.js
-            --create-module-id-factory $PWD/node_modules/dd-rn-packager/idfactory.js
-            `, chalk.blue('Building iOS')],
-          [`
-            pushd mobile &&
-            node node_modules/dd-rn-packager/react-native/local-cli/cli.js bundle 
-            --dev false
-            --manifest-file ../tmp/base.android.${config.baseBundleVersion}.manifest
-            --manifest-output ../build/bundle/index.android.${config.baseBundleVersion}.manifest
-            --platform android
-            --entry-file index.android.js
-            --bundle-output ../build/bundle/index.android.${config.baseBundleVersion}.manifest.bundle
-            --sourcemap-output ../build/bundle/index.android.${config.baseBundleVersion}.sourcemap
-            --post-process-modules $PWD/node_modules/dd-rn-packager/process.js
-            --create-module-id-factory $PWD/node_modules/dd-rn-packager/idfactory.js
-            `, chalk.blue('Building Android')]
-        )
+        
+        // Build each mobile platform with the metro bundler: https://github.com/facebook/metro
+        const platforms = ['ios', 'android']
+        return Promise.all(platforms.map(async platform => {
+          const root = path.join(process.cwd(), 'mobile')
+          console.log(chalk.blue(`Building ${platform}`))
+          const { metroBundle } = await packager({
+            baseManifestFilename: `./tmp/base.${platform}.${config.baseBundleVersion}.manifest`,
+            entry: `./index.${platform}.js`,
+            manifestOut: `./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest`,
+            out: `./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle`,
+            platform,
+            root,
+          })
+
+          // Remove the bundle prelude and `require` definition, which are in the base bundle
+          const bundle = fs.readFileSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.js`, {encoding: 'utf8'})
+          const firstDefine = bundle.indexOf('\n__d')
+          fs.writeFileSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.js`, bundle.substring(firstDefine))
+
+          fs.writeFileSync(path.join(process.cwd(), `build/bundle/index.${platform}.${config.baseBundleVersion}.sourcemap`), metroBundle.map)
+          fs.renameSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.js`, `./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle`)
+          fs.renameSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.js.meta`, `./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.meta`)
+        }))
       } else {
-        commands.push(
-          [``, chalk.yellow('mobile folder not found. Skipping build.')]
-        )
+        console.log(chalk.yellow('mobile folder not found. Skipping build.'))
       }
+    })
+    .then(() => {
+      const commands = []
 
       if (fileExists('web/admin')) {
         commands.push(
