@@ -1,12 +1,12 @@
 const fs = require('fs')
 const path = require('path')
-const metro = require('metro')
+const metro = require('../../metro/packages/metro/build')
 const config = require('./config')
 
 module.exports = build
 
 async function build({baseManifestFilename, entry, manifestOut, out, platform, root}) {
-  const baseManifest = JSON.parse(fs.readFileSync(baseManifestFilename))
+  const baseManifest = fs.existsSync(baseManifestFilename) ? JSON.parse(fs.readFileSync(baseManifestFilename)) : null
 
   const opts = {
     dev: false,

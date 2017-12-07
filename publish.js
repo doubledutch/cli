@@ -105,7 +105,7 @@ function publishBinary(accountConfig, packageJSON) {
           const firstDefine = bundle.indexOf('\n__d')
           fs.writeFileSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.js`, bundle.substring(firstDefine))
 
-          fs.writeFileSync(path.join(process.cwd(), `build/bundle/index.${platform}.${config.baseBundleVersion}.sourcemap`), metroBundle.map)
+          fs.writeFileSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.sourcemap`, metroBundle.map)
           fs.renameSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.js`, `./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle`)
           fs.renameSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.js.meta`, `./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.meta`)
         }))
