@@ -4,7 +4,7 @@ const fs = require('fs')
 const rimraf = require('rimraf')
 
 const packager = require('../../packager.js')
-const { version } = require('./package.json')
+const { baseBundleVersion } = require('../../config')
 
 const bundleDir = `../${version}`
 
