@@ -2054,8 +2054,9 @@ methods@^1.1.1, methods@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/methods/-/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
 
-"metro@file:../../metro/packages/metro":
-  version "0.22.1"
+metro@^0.23.0:
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/metro/-/metro-0.23.0.tgz#12b4232d520552696e0ef028d8613c1c11d57490"
   dependencies:
     absolute-path "^0.0.0"
     async "^2.4.0"
