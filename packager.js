@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const metro = require('../../metro/packages/metro/build')
+const metro = require('metro')
 const config = require('./config')
 
 module.exports = build

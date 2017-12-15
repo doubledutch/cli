@@ -34,7 +34,7 @@
     "firebase": "^4.4.0",
     "fs-extra": "^4.0.2",
     "inquirer": "^3.3.0",
-    "metro": "^0.23.1",
+    "metro": "^0.24.1",
     "promised-exec": "^1.0.1",
     "superagent": "^3.6.0",
     "update-notifier": "^2.2.0"

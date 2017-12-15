@@ -1804,26 +1804,26 @@ isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
 
-jest-docblock@21.3.0-beta.8:
-  version "21.3.0-beta.8"
-  resolved "https://registry.yarnpkg.com/jest-docblock/-/jest-docblock-21.3.0-beta.8.tgz#60b533e42e95ae607704d7f2d131c76dc1ffbe2e"
+jest-docblock@21.3.0-beta.13:
+  version "21.3.0-beta.13"
+  resolved "https://registry.yarnpkg.com/jest-docblock/-/jest-docblock-21.3.0-beta.13.tgz#a6fc6534ee1cc73eb6c8693bc99b12135ab7cca4"
   dependencies:
     detect-newline "^2.1.0"
 
-jest-haste-map@21.3.0-beta.8:
-  version "21.3.0-beta.8"
-  resolved "https://registry.yarnpkg.com/jest-haste-map/-/jest-haste-map-21.3.0-beta.8.tgz#3c9c06562c754a000921ed34bc07d0537e336daf"
+jest-haste-map@21.3.0-beta.13:
+  version "21.3.0-beta.13"
+  resolved "https://registry.yarnpkg.com/jest-haste-map/-/jest-haste-map-21.3.0-beta.13.tgz#4366ec58c0c2ad1b87800b81dbfd647a50c0ae54"
   dependencies:
     fb-watchman "^2.0.0"
     graceful-fs "^4.1.11"
-    jest-docblock "21.3.0-beta.8"
-    jest-worker "21.3.0-beta.8"
+    jest-docblock "21.3.0-beta.13"
+    jest-worker "21.3.0-beta.13"
     micromatch "^2.3.11"
     sane "^2.0.0"
 
-jest-worker@21.3.0-beta.8:
-  version "21.3.0-beta.8"
-  resolved "https://registry.yarnpkg.com/jest-worker/-/jest-worker-21.3.0-beta.8.tgz#c8109f1e0f916e4f5f9c27a027dd339cb7952b5e"
+jest-worker@21.3.0-beta.13:
+  version "21.3.0-beta.13"
+  resolved "https://registry.yarnpkg.com/jest-worker/-/jest-worker-21.3.0-beta.13.tgz#17c467b8e9711cf50240e3dfdc5bbaf2d2125100"
   dependencies:
     merge-stream "^1.0.1"
 
@@ -2054,9 +2054,19 @@ methods@^1.1.1, methods@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/methods/-/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
 
-metro@^0.23.0:
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/metro/-/metro-0.23.0.tgz#12b4232d520552696e0ef028d8613c1c11d57490"
+metro-core@0.24.1:
+  version "0.24.1"
+  resolved "https://registry.yarnpkg.com/metro-core/-/metro-core-0.24.1.tgz#3a3778fbbf560b16cb718edb3b3a67765a9b249d"
+
+metro-source-map@0.24.1:
+  version "0.24.1"
+  resolved "https://registry.yarnpkg.com/metro-source-map/-/metro-source-map-0.24.1.tgz#b7f7446866873080657fd419e68fcb713dd817e4"
+  dependencies:
+    source-map "^0.5.6"
+
+metro@^0.24.1:
+  version "0.24.1"
+  resolved "https://registry.yarnpkg.com/metro/-/metro-0.24.1.tgz#ae6882a242438e68dd084c588a4c18cd36d8efe6"
   dependencies:
     absolute-path "^0.0.0"
     async "^2.4.0"
@@ -2078,14 +2088,16 @@ metro@^0.23.0:
     fs-extra "^1.0.0"
     graceful-fs "^4.1.3"
     image-size "^0.6.0"
-    jest-docblock "21.3.0-beta.8"
-    jest-haste-map "21.3.0-beta.8"
-    jest-worker "21.3.0-beta.8"
+    jest-docblock "21.3.0-beta.13"
+    jest-haste-map "21.3.0-beta.13"
+    jest-worker "21.3.0-beta.13"
     json-stable-stringify "^1.0.1"
     json5 "^0.4.0"
     left-pad "^1.1.3"
     lodash "^4.16.6"
     merge-stream "^1.0.1"
+    metro-core "0.24.1"
+    metro-source-map "0.24.1"
     mime-types "2.1.11"
     mkdirp "^0.5.1"
     request "^2.79.0"
