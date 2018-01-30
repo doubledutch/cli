@@ -25,6 +25,7 @@ program
 
 program
   .command('publish')
+  .option('-s, --skipBuild', 'Skip rebuilding. Only ZIP and publish')
   .description('publishes the DoubleDutch extension in the current folder')
   .action(require('./publish'))
 
