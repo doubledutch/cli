@@ -180,7 +180,5 @@ async function publishBinary(accountConfig, packageJSON) {
 
 async function isAlreadyPublished(extension, version) {
   return await firebase.database().ref(`extensions/${extension}/versions/${version.replace(/\./g,'-')}`).once('value')
-  .then(data => {
-    return (data !== null)
-  })
+  .then(data => data.val() !== null)
 }
