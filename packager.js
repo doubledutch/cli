@@ -9,17 +9,17 @@ async function build({baseManifestFilename, entry, manifestOut, out, platform, r
   const baseManifest = fs.existsSync(baseManifestFilename) ? JSON.parse(fs.readFileSync(baseManifestFilename)) : null
 
   const opts = {
-    dev: false,
     config: {
       createModuleIdFactory: idFactory(baseManifest),
       postProcessModules: postProcessor(baseManifest, manifestOut),
     },
+    dev: false,
     entry,
-    sourceMap: true,
     optimize: true,
     out,
     platform,
     projectRoots: [root, path.join(root, 'node_modules')],
+    sourceMap: true,
   }
 
   return await metro.runBuild(opts)

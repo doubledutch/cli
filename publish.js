@@ -40,10 +40,6 @@ async function publishBinary(accountConfig, packageJSON) {
     throw `Extension name in package.json (${extensionName}) is not valid. Letters, numbers, -, and _ are valid.`
   }
 
-  console.log(`Publishing extension ${chalk.green(extensionName)}@${chalk.green(packageJSON.version)} to DoubleDutch...`)
-
-  // TODO - we should really just check the expiration of the token
-  const accessToken = await requestAccessToken(accountConfig.username, accountConfig.refresh_token)
   const dmp = new DiffMatchPatch()
   dmp.Diff_Timeout = 60
 
@@ -73,6 +69,21 @@ async function publishBinary(accountConfig, packageJSON) {
   }
 
   try {
+    console.log(chalk.blue(`Authenticating as ${accountConfig.username}...`))
+    // TODO - we should really just check the expiration of the token
+    firebase.initializeApp(firebaseUtils.config)
+    const accessToken = await requestAccessToken(accountConfig.username, accountConfig.refresh_token)
+    const firebaseToken = await firebaseUtils.getDeveloperToken(accessToken)
+    const user = await firebase.auth().signInWithCustomToken(firebaseToken)
+    const firebaseIdToken = await user.getIdToken()
+    console.log(chalk.blue('Authenticated ✔️'))
+  
+    if (await isAlreadyPublished(extensionName, packageJSON.version)) {
+      throw `${extensionName}@${packageJSON.version} is already published. Please publish a new version.`
+    }
+  
+    console.log(`Publishing extension ${chalk.green(extensionName)}@${chalk.green(packageJSON.version)} to DoubleDutch...`)
+
     if (fs.existsSync('mobile')) {
       // Build each mobile platform with the metro bundler: https://github.com/facebook/metro
       await buildMobile('ios')
@@ -131,7 +142,6 @@ async function publishBinary(accountConfig, packageJSON) {
       [`zip -r tmp/build.${config.baseBundleVersion}.zip build/`, chalk.blue('Generating zip')]
     )
 
-    firebase.initializeApp(firebaseUtils.config)
     commands.forEach(async command => {
       console.log(`${command[1]}...`)
       if (command[0]) {
@@ -146,10 +156,6 @@ async function publishBinary(accountConfig, packageJSON) {
       reactNativeVersion: config.baseBundleVersion,
       mobileURL: `https://firebasestorage.googleapis.com/v0/b/bazaar-179323.appspot.com/o/extensions%2F${encodeURIComponent(extensionName)}%2F${encodeURIComponent(version)}%2Fmobile%2Findex.__platform__.0.46.4.manifest.bundle?module=${encodeURIComponent(extensionName)}&alt=media#plugin`
     }
-
-    const firebaseToken = await firebaseUtils.getDeveloperToken(accessToken)
-    const user = await firebase.auth().signInWithCustomToken(firebaseToken)
-    const firebaseIdToken = await user.getIdToken()
 
     console.log('Done. Uploading binaries...')
     const location = `users/${firebase.auth().currentUser.uid}/staged/binaries/${extensionName}/${json.version}/build.zip`
@@ -170,4 +176,11 @@ async function publishBinary(accountConfig, packageJSON) {
     console.log(typeof err === 'string' ? chalk.red(err) : err)
     process.exit(-1)
   }
+}
+
+async function isAlreadyPublished(extension, version) {
+  return await firebase.database().ref(`extensions/${extension}/versions/${version.replace(/\./g,'-')}`).once('value')
+  .then(data => {
+    return (data !== null)
+  })
 }

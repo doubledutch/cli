@@ -3,7 +3,7 @@
 // Notify user of any updates to the CLI
 const updateNotifier = require('update-notifier')
 const pkg = require('./package.json')
-updateNotifier({pkg}).notify()
+updateNotifier({pkg, isGlobal: true}).notify()
 
 // Parse CLI
 const program = require('commander').name('doubledutch').version(pkg.version)
