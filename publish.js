@@ -70,7 +70,7 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
     const firebaseIdToken = await user.getIdToken()
     console.log(chalk.blue('Authenticated ✔️'))
   
-    if (await isAlreadyPublished(extensionName, packageJSON.version)) {
+    if (!cmd.force && await isAlreadyPublished(extensionName, packageJSON.version)) {
       throw `${extensionName}@${packageJSON.version} is already published. Please publish a new version.`
     }
   
@@ -113,7 +113,7 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
     if (!cmd.skipBuild) {
       if (fileExists('web/admin')) {
         commands.push(
-          [`pushd web/admin && npm run build`, chalk.blue('Generating Admin web bundle')],
+          [`pushd web/admin && npm run build && popd`, chalk.blue('Generating Admin web bundle')],
           [`cp -r web/admin/build/ build/site/private/`, chalk.blue('Copying Admin web bundle')]
         )
       } else {
@@ -122,15 +122,25 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
         )
       }
 
-      if (fileExists('web/attendee')) {
+      // if (fileExists('web/attendee')) {
+      //   commands.push(
+      //     [`pushd web/attendee && npm run build && popd`, chalk.blue('Generating Attendee web bundle')],
+      //     [`cp -r web/attendee/build/ build/site/public/`, chalk.blue('Copying Attendee web bundle')]
+      //   )
+      // } else {
+      //   commands.push(
+      //     [``, chalk.yellow('web/attendee folder not found. Skipping build.')]
+      //   )
+      // }
+
+      if (fileExists('api')) {
         commands.push(
-          [`pushd web/attendee && npm run build`, chalk.blue('Generating Attendee web bundle')],
-          [`cp -r web/attendee/build/ build/site/public/`, chalk.blue('Copying Attendee web bundle')]
+          [`pushd api && npm run build && popd`, chalk.blue('Generating API bundle')],
         )
       } else {
         commands.push(
-          [``, chalk.yellow('web/attendee folder not found. Skipping build.')]
-        )
+          [`echo skipping api`, chalk.yellow('api folder not found. Skipping build.')]
+        )        
       }
     }
 
