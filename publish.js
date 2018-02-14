@@ -69,6 +69,11 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
     const user = await firebase.auth().signInWithCustomToken(firebaseToken)
     const firebaseIdToken = await user.getIdToken()
     console.log(chalk.blue('Authenticated ✔️'))
+
+    if (!(await isExtensionNewOrOwnedBy(extensionName, user))) {
+      // This is also checked on the server, but we should fail fast.
+      throw `Access denied. The extension name '${extensionName}' is already taken. If you are trying to publish a new extension, please run 'doubledutch init' with a different name.`
+    }
   
     if (!cmd.force && await isAlreadyPublished(extensionName, packageJSON.version)) {
       throw `${extensionName}@${packageJSON.version} is already published. Please publish a new version.`
@@ -190,4 +195,15 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
 async function isAlreadyPublished(extension, version) {
   return await firebase.database().ref(`extensions/${extension}/versions/${version.replace(/\./g,'-')}`).once('value')
   .then(data => data.val() !== null)
+}
+
+async function isExtensionNewOrOwnedBy(extension, user) {
+  return await firebase.database().ref(`extensions/${extension}/owners`).once('value')
+  .then(data => {
+    const owners = data.val()
+    return (
+      owners == null        // New extension with no ownership claimed yet...
+      || !!owners[user.uid] // ... or the current user is an owner.
+    )
+  })
 }
