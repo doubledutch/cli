@@ -60,7 +60,7 @@ const makePackageJSON = (projectName) => `\
 }
 `
 
-const nativeModules = ['react-native-camera', 'react-native-fetch-blob', 'react-native-video', 'react-native-youtube']
+const nativeModules = ['react-native-camera@0.10.0', 'react-native-fetch-blob@0.10.8', 'react-native-video@2.0.0', 'react-native-youtube@1.0.1']
 const makeLinks = () => nativeModules.map(makeLink).join('\n')
 const makeLink = (module) =>
   `echo Adding ${module}...\n` + `yarn add ${module}\n` + `echo Linking ${module}...\n` + `node node_modules/react-native/local-cli/cli.js link ${module}`
