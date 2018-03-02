@@ -18,5 +18,10 @@ module.exports = {
     projectId: 'bazaar-179323',
     storageBucket: 'bazaar-179323.appspot.com',
     messagingSenderId: '340673979956'
+  },
+  cms: {
+    prioritizedRegions: ['us', 'eu'],
+    us: 'https://cms.doubledutch.me',
+    eu: 'https://cms.eu.doubledutch.me'
   }
 }

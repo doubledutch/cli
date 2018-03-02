@@ -7,10 +7,12 @@ const ddHome = resolveHome('~/.dd')
 const ddConfig = path.join(ddHome, 'config.json')
 
 module.exports = {
+  authenticate: require('./authenticate'),
   ddHome,
   ddConfig,
   fileExists,
   firebase: require('./firebase'),
+  getCurrentExtension: require('./getCurrentExtension'),
   promisify,
   requestAccessToken,
   saveConfig,
