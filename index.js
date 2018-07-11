@@ -58,4 +58,9 @@ program
   .description('publishes the DoubleDutch extension in the current folder')
   .action(require('./publish'))
 
+program
+  .command('rename <name>')
+  .description('Renames the current extension')
+  .action(require('./rename'))
+
 program.parse(process.argv.length > 2 ? process.argv : [...process.argv, '--help'])
