@@ -60,7 +60,7 @@ program
 
 program
   .command('rename <name>')
-  .description('Renames the current extension')
+  .description('Dangerous. Renames the current extension. Run ONLY on a git repository with no pending commits.')
   .action(require('./rename'))
 
 program.parse(process.argv.length > 2 ? process.argv : [...process.argv, '--help'])
