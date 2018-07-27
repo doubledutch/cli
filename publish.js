@@ -47,7 +47,7 @@ module.exports = function publish(cmd, options) {
 
   return publishBinary(configJSON, extensionPackageJSON, cmd)
     .then(result => {
-      console.log(result)
+      if (!cmd.apiOnly) console.log(result)
       process.exit(0)
     })
     .catch(err => console.error(err))
@@ -91,13 +91,17 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
       throw `Access denied. The extension name '${extensionName}' is already taken. If you are trying to publish a new extension, please run 'doubledutch init' with a different name.`
     }
   
-    if (!cmd.force && await isAlreadyPublished(extensionName, packageJSON.version)) {
+    if (!cmd.force && !cmd.apiOnly && await isAlreadyPublished(extensionName, packageJSON.version)) {
       throw `${extensionName}@${packageJSON.version} is already published. Please publish a new version.`
     }
   
-    console.log(`Publishing extension ${chalk.green(extensionName)}@${chalk.green(packageJSON.version)} to DoubleDutch...`)
+    if (cmd.apiOnly) {
+      console.log(`Publishing cloud functions ONLY for extension ${chalk.green(extensionName)} to DoubleDutch...`)
+    } else {
+      console.log(`Publishing extension ${chalk.green(extensionName)}@${chalk.green(packageJSON.version)} to DoubleDutch...`)
+    }
 
-    if (!cmd.skipBuild) {
+    if (!cmd.skipBuild && !cmd.apiOnly) {
       if (fs.existsSync('mobile')) {
         await promisedExec('pushd mobile && yarn && popd')
         // Build each mobile platform with the metro bundler: https://github.com/facebook/metro
@@ -133,15 +137,17 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
     const commands = []
 
     if (!cmd.skipBuild) {
-      if (fileExists('web/admin')) {
-        commands.push(
-          [`pushd web/admin && yarn && npm run build && popd`, chalk.blue('Generating Admin web bundle')],
-          [`cp -r web/admin/build/ build/site/private/`, chalk.blue('Copying Admin web bundle')]
-        )
-      } else {
-        commands.push(
-          [`echo skipping web/admin`, chalk.yellow('web/admin folder not found. Skipping build.')]
-        )
+      if (!cmd.apiOnly) {
+        if (fileExists('web/admin')) {
+          commands.push(
+            [`pushd web/admin && yarn && npm run build && popd`, chalk.blue('Generating Admin web bundle')],
+            [`cp -r web/admin/build/ build/site/private/`, chalk.blue('Copying Admin web bundle')]
+          )
+        } else {
+          commands.push(
+            [`echo skipping web/admin`, chalk.yellow('web/admin folder not found. Skipping build.')]
+          )
+        }
       }
 
       // if (fileExists('web/attendee')) {

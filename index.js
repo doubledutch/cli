@@ -55,6 +55,7 @@ program
   .command('publish')
   .option('-s, --skipBuild', 'Skip rebuilding. Only ZIP and publish')
   .option('-f, --force', 'Allow republishing an existing version')
+  .option('-a, --apiOnly', 'Deploys only the cloud functions')
   .description('publishes the DoubleDutch extension in the current folder')
   .action(require('./publish'))
 
