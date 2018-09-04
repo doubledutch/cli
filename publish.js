@@ -22,19 +22,11 @@ const request = require('superagent')
 const chalk = require('chalk')
 const config = require('./config')
 const pkg = require('./package.json')
-const { ddHome, ddConfig, fileExists, promisify, requestAccessToken, saveConfig } = require('./utils')
+const { ddConfig, fileExists, requestAccessToken } = require('./utils')
 const DiffMatchPatch = require('diff-match-patch')
 const firebaseUtils = require('./utils/firebase')
 const packager = require('./packager')
 const firebase = require('firebase')
-
-const bundleBase = `https://firebasestorage.googleapis.com/v0/b/${config.firebase.storageBucket}/o/lib%2Fbundles%2F`
-
-// TODO: Is this needed?
-// const iosBaseBundle = `${bundleBase}base.ios.${config.baseBundleVersion}.bundle?alt=media`
-// const androidBaseBundle = `${bundleBase}base.android.${config.baseBundleVersion}.bundle?alt=media`
-const iosBaseManifest = `${bundleBase}base.ios.${config.baseBundleVersion}.manifest?alt=media`
-const androidBaseManifest = `${bundleBase}base.android.${config.baseBundleVersion}.manifest?alt=media`
 
 module.exports = function publish(cmd, options) {
   if (!fileExists('package.json')) return console.log('This does not appear to be a doubledutch extension project. No package.json found.')
@@ -47,7 +39,9 @@ module.exports = function publish(cmd, options) {
 
   return publishBinary(configJSON, extensionPackageJSON, cmd)
     .then(result => {
-      if (!cmd.apiOnly) console.log(result)
+      if (!cmd.apiOnly) {
+        Object.keys(result).forEach(key => console.log(chalk.green(`  ${key}: ${result[key]}`)))
+      }
       process.exit(0)
     })
     .catch(err => console.error(err))
@@ -106,7 +100,9 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
         await promisedExec('pushd mobile && yarn && popd')
         // Build each mobile platform with the metro bundler: https://github.com/facebook/metro
         await buildMobile('ios')
-        await buildMobile('android')
+        if (!cmd.iosOnly) {
+          await buildMobile('android')
+        }
 
         async function buildMobile(platform) {
           const root = path.join(process.cwd(), 'mobile')
@@ -137,7 +133,7 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
     const commands = []
 
     if (!cmd.skipBuild) {
-      if (!cmd.apiOnly) {
+      if (!cmd.apiOnly && !cmd.iosOnly) {
         if (fileExists('web/admin')) {
           commands.push(
             [`pushd web/admin && yarn && npm run build && popd`, chalk.blue('Generating Admin web bundle')],
@@ -161,14 +157,16 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
       //   )
       // }
 
-      if (fileExists('api')) {
-        commands.push(
-          [`pushd api && yarn && npm run build && popd`, chalk.blue('Generating API bundle')],
-        )
-      } else {
-        commands.push(
-          [`echo skipping api`, chalk.yellow('api folder not found. Skipping build.')]
-        )        
+      if (!cmd.iosOnly) {
+        if (fileExists('api')) {
+          commands.push(
+            [`pushd api && yarn && npm run build && popd`, chalk.blue('Generating API bundle')],
+          )
+        } else {
+          commands.push(
+            [`echo skipping api`, chalk.yellow('api folder not found. Skipping build.')]
+          )        
+        }
       }
     }
 
@@ -186,10 +184,10 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
 
     const version = packageJSON.version
     const json = {
-      cliVersion: pkg.version,
+      extension: extensionName,
       version,
       reactNativeVersion: config.baseBundleVersion,
-      mobileURL: `https://firebasestorage.googleapis.com/v0/b/bazaar-179323.appspot.com/o/extensions%2F${encodeURIComponent(extensionName)}%2F${encodeURIComponent(version)}%2Fmobile%2Findex.__platform__.0.46.4.manifest.bundle?module=${encodeURIComponent(extensionName)}&alt=media#plugin`
+      cliVersion: pkg.version,
     }
 
     console.log('Done. Uploading binaries...')

@@ -56,6 +56,7 @@ program
   .option('-s, --skipBuild', 'Skip rebuilding. Only ZIP and publish')
   .option('-f, --force', 'Allow republishing an existing version')
   .option('-a, --apiOnly', 'Deploys only the cloud functions')
+  .option('-I, --iosOnly', 'Deploys only the iOS mobile package')
   .description('publishes the DoubleDutch extension in the current folder')
   .action(require('./publish'))
 
