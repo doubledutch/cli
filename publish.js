@@ -107,7 +107,7 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
         async function buildMobile(platform) {
           const root = path.join(process.cwd(), 'mobile')
           console.log(chalk.blue(`Building ${platform}`))
-          const { metroBundle } = await packager({
+          const { metroBundle } = await packager.build({
             baseManifestFilename: path.join(__dirname, 'bundles', config.baseBundleVersion, `base.${platform}.${config.baseBundleVersion}.manifest`),
             entry: `./index.${platform}.js`,
             manifestOut: `./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest`,

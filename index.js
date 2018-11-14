@@ -61,6 +61,11 @@ program
   .action(require('./publish'))
 
 program
+  .command('serve')
+  .description('Runs the React Native bundle server')
+  .action(require('./serve'))
+
+program
   .command('rename <name>')
   .description('Dangerous. Renames the current extension. Run ONLY on a git repository with no pending commits.')
   .action(require('./rename'))
