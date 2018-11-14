@@ -76,7 +76,8 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
     firebase.initializeApp(firebaseUtils.config)
     const accessToken = await requestAccessToken(accountConfig.username, accountConfig.refresh_token)
     const firebaseToken = await firebaseUtils.getDeveloperToken(accessToken)
-    const user = await firebase.auth().signInWithCustomToken(firebaseToken)
+    const userCredential = await firebase.auth().signInWithCustomToken(firebaseToken)
+    const { user } = userCredential
     const firebaseIdToken = await user.getIdToken()
     console.log(chalk.blue('Authenticated ✔️'))
 
