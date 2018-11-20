@@ -35,22 +35,22 @@ async function serve(cmd) {
     if (fs.existsSync('mobile')) {
       // Serve with the metro bundler: https://github.com/facebook/metro
       const root = path.join(process.cwd(), 'mobile')
-      console.log(root)
+      const port = 8081
       const createMiddleware = platform => packager.createConnectMiddleware({
         baseManifestFilename: path.join(__dirname, 'bundles', config.baseBundleVersion, `base.${platform}.${config.baseBundleVersion}.manifest`),
         root,
+        port
       })
 
       const iosMiddleware = await createMiddleware('ios')
       const androidMiddleware = await createMiddleware('android')
 
-      const port = 3000
       const connect = require('connect')
       const http = require('http')
       const server = connect()
         .use('/ios', iosMiddleware.middleware)
         .use('/android', androidMiddleware.middleware)
-        .use('/massaged', massageBundleMiddleware)
+        // .use('/massaged', massageBundleMiddleware)
       server.listen(port)
 
       function massageBundleMiddleware(req, res, next) {

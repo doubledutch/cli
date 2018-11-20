@@ -20,25 +20,30 @@ const metro = require('metro')
 
 module.exports = { build, createConnectMiddleware }
 
-async function build({baseManifestFilename, entry, manifestOut, out, platform, root}) {
+function getMetroConfig(baseManifestFilename, root, port) {
   const baseManifest = fs.existsSync(baseManifestFilename) ? JSON.parse(fs.readFileSync(baseManifestFilename)) : null
-
-  const config = {
+  return {
     resolver: {
       providesModuleNodeModules: ['react-native'],
+      resolverMainFields: ['react-native', 'browser', 'main'],
+      hasteImplModulePath: path.join(root, 'node_modules/react-native/jest/hasteImpl.js'),
+      blacklistRE: /(.*\/__fixtures__\/.*|node_modules[\/\\]react[\/\\]dist[\/\\].*|website\/node_modules\/.*|heapCapture\/bundle\.js|.*\/__tests__\/.*)$/,
     },
     transformer: {
-      // asyncRequireModulesPath: require.resolve('metro/src/lib/bundle-modules/asyncRequire'),
-      babelTransformerPath: require.resolve('metro/src/reactNativeTransformer'),
+      babelTransformerPath: require.resolve('metro/src/reactNativeTransformer')
     },
     serializer: {
       createModuleIdFactory: idFactory(baseManifest, root),
-      //postProcessModules: postProcessor(baseManifest, manifestOut, root),
+      //postProcessModules: postProcessor(baseManifest, null, root),
     },
-    server: {},
+    server: {port},
     projectRoot: root,
-    watchFolders: [root, path.join(__dirname, 'node_modules', 'metro'), path.join(root, 'node_modules', 'react-native')],
+    watchFolders: [root, path.join(root, 'node_modules'), path.join(__dirname, 'node_modules')],
   }
+} 
+
+async function build({baseManifestFilename, entry, manifestOut, out, platform, root}) {
+  const config = getMetroConfig(baseManifestFilename, root)
 
   const opts = {
     dev: false,
@@ -53,24 +58,10 @@ async function build({baseManifestFilename, entry, manifestOut, out, platform, r
   return await metro.runBuild(config, opts)
 }
 
-async function createConnectMiddleware({baseManifestFilename, root}) {
-  const baseManifest = fs.existsSync(baseManifestFilename) ? JSON.parse(fs.readFileSync(baseManifestFilename)) : null
-  const config = {
-    resolver: {
-      providesModuleNodeModules: ['react-native'],
-    },
-    transformer: {
-      babelTransformerPath: require.resolve('metro/src/reactNativeTransformer')
-    },
-    serializer: {
-      createModuleIdFactory: idFactory(baseManifest, root),
-      //postProcessModules: postProcessor(baseManifest, null, root),
-    },
-    server: {port: 3000},
-    projectRoot: root,
-    watchFolders: [root, path.join(root, 'node_modules'), path.join(__dirname, 'node_modules', 'metro')],
-  }
+async function createConnectMiddleware({baseManifestFilename, root, port}) {
+  const config = getMetroConfig(baseManifestFilename, root, port)
   const opts = {
+    hmrEnabled: true
   }
 
   return await metro.createConnectMiddleware(config, opts)
