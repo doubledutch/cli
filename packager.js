@@ -22,6 +22,10 @@ module.exports = { build, createConnectMiddleware }
 
 function getMetroConfig(baseManifestFilename, root, port) {
   const baseManifest = fs.existsSync(baseManifestFilename) ? JSON.parse(fs.readFileSync(baseManifestFilename)) : null
+  const pathForModule = pathForModuleProvider(root)
+  const moduleNotInBaseBundle = baseManifest
+    ? m => !baseManifest.modules[pathForModule(m)] && m.path !== '__prelude__' && !m.path.endsWith('/node_modules/metro/src/lib/polyfills/require.js')
+    : () => true
   return {
     resolver: {
       providesModuleNodeModules: ['react-native'],
@@ -34,6 +38,7 @@ function getMetroConfig(baseManifestFilename, root, port) {
     },
     serializer: {
       createModuleIdFactory: idFactory(baseManifest, root),
+      processModuleFilter: moduleNotInBaseBundle
     },
     server: {port},
     projectRoot: root,
@@ -67,7 +72,6 @@ async function build({baseManifestFilename, entry, out, platform, root, processM
 async function createConnectMiddleware({baseManifestFilename, root, port}) {
   const config = getMetroConfig(baseManifestFilename, root, port)
   const opts = {
-    hmrEnabled: true
   }
 
   return await metro.createConnectMiddleware(config, opts)

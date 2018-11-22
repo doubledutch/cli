@@ -1,6 +1,6 @@
 {
   "name": "@doubledutch/cli",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "DoubleDutch developer command-line interface.",
   "main": "index.js",
   "scripts": {
@@ -32,7 +32,7 @@
     "commander": "^2.11.0",
     "connect": "^3.6.6",
     "diff-match-patch": "^1.0.0",
-    "firebase": "^4.4.0",
+    "firebase": "^5.5.8",
     "fs-extra": "^4.0.2",
     "inquirer": "^3.3.0",
     "metro": "^0.49.2",
