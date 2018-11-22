@@ -34,7 +34,6 @@ function getMetroConfig(baseManifestFilename, root, port) {
     },
     serializer: {
       createModuleIdFactory: idFactory(baseManifest, root),
-      //postProcessModules: postProcessor(baseManifest, null, root),
     },
     server: {port},
     projectRoot: root,
@@ -42,8 +41,16 @@ function getMetroConfig(baseManifestFilename, root, port) {
   }
 } 
 
-async function build({baseManifestFilename, entry, manifestOut, out, platform, root}) {
+async function build({baseManifestFilename, entry, out, platform, root, processModuleFilter, createModuleIdFactory}) {
   const config = getMetroConfig(baseManifestFilename, root)
+
+  if (processModuleFilter) {
+    config.serializer.processModuleFilter = processModuleFilter
+  }
+
+  if (createModuleIdFactory) {
+    config.serializer.createModuleIdFactory = createModuleIdFactory
+  }
 
   const opts = {
     dev: false,
@@ -51,7 +58,6 @@ async function build({baseManifestFilename, entry, manifestOut, out, platform, r
     optimize: true,
     out,
     platform,
-    // projectRoots: [root, path.join(root, 'node_modules')],
     sourceMap: true,
   }
 

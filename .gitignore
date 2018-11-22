@@ -3,3 +3,4 @@ node_modules
 bundles/*/*.bundle
 bundles/*/*.bundle.meta
 bundles/*/*.sourcemap
+bundles/*/*.map
