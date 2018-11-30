@@ -18,6 +18,10 @@
 // Notify user of any updates to the CLI
 const updateNotifier = require('update-notifier')
 const pkg = require('./package.json')
+const buildMobile = require('./buildMobile')
+
+module.exports = { buildMobile }
+
 updateNotifier({pkg, isGlobal: true}).notify()
 
 // Parse CLI

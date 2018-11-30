@@ -25,7 +25,7 @@ const pkg = require('./package.json')
 const { ddConfig, fileExists, requestAccessToken } = require('./utils')
 const DiffMatchPatch = require('diff-match-patch')
 const firebaseUtils = require('./utils/firebase')
-const packager = require('./packager')
+const buildMobile = require('./buildMobile')
 const firebase = require('firebase')
 
 module.exports = function publish(cmd, options) {
@@ -100,31 +100,10 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
       if (fs.existsSync('mobile')) {
         await promisedExec('pushd mobile && yarn && popd')
         // Build each mobile platform with the metro bundler: https://github.com/facebook/metro
-        await buildMobile('ios')
+        const root = path.join(process.cwd(), 'mobile')
+        await buildMobile('ios', root)
         if (!cmd.iosOnly) {
-          await buildMobile('android')
-        }
-
-        async function buildMobile(platform) {
-          const root = path.join(process.cwd(), 'mobile')
-          console.log(chalk.blue(`Building ${platform}`))
-          const { metroBundle } = await packager({
-            baseManifestFilename: path.join(__dirname, 'bundles', config.baseBundleVersion, `base.${platform}.${config.baseBundleVersion}.manifest`),
-            entry: `./index.${platform}.js`,
-            manifestOut: `./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest`,
-            out: `./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle`,
-            platform,
-            root,
-          })
-
-          // Remove the bundle prelude and `require` definition, which are in the base bundle
-          const bundle = fs.readFileSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.js`, {encoding: 'utf8'})
-          const firstDefine = bundle.indexOf('\n__d')
-          fs.writeFileSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.js`, bundle.substring(firstDefine))
-
-          fs.writeFileSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.sourcemap`, metroBundle.map)
-          fs.renameSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.js`, `./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle`)
-          fs.renameSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.js.meta`, `./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.meta`)
+          await buildMobile('android', root)
         }
       } else {
         console.log(chalk.yellow('mobile folder not found. Skipping build.'))
