@@ -36,14 +36,16 @@ async function serve(cmd) {
       // Serve with the metro bundler: https://github.com/facebook/metro
       const root = path.join(process.cwd(), 'mobile')
       const port = 8081
-      const createMiddleware = platform => packager.createConnectMiddleware({
-        baseManifestFilename: path.join(__dirname, 'bundles', config.baseBundleVersion, `base.${platform}.${config.baseBundleVersion}.manifest`),
+      const createMiddleware = (platform, useManifest) => packager.createConnectMiddleware({
+        baseManifestFilename: useManifest
+          ? path.join(__dirname, 'bundles', config.baseBundleVersion, `base.${platform}.${config.baseBundleVersion}.manifest`)
+          : null,
         root,
         port
       })
 
-      const iosMiddleware = await createMiddleware('ios')
-      const androidMiddleware = await createMiddleware('android')
+      const iosMiddleware = await createMiddleware('ios', false)
+      const androidMiddleware = await createMiddleware('android', false)
 
       const connect = require('connect')
       const http = require('http')

@@ -4,8 +4,8 @@
 // 2. Update `baseBundleVersion` in /config.js, by convention matching the React Native version you are using.
 // 3. From the /bundles/make folder, run make.sh.
 
-import React from 'react';
-import ReactNative from 'react-native';
+import React from 'react'
+import ReactNative from 'react-native'
 import CachedImage from 'react-native-cached-image'
 import FetchBlob from 'react-native-fetch-blob'
 import Camera from 'react-native-camera'

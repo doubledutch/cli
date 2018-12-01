@@ -38,6 +38,10 @@ function getMetroConfig(baseManifestFilename, root, port) {
     },
     serializer: {
       createModuleIdFactory: idFactory(baseManifest, root),
+      getModulesRunBeforeMainModule: () => [
+        path.join(root, 'node_modules/react-native/Libraries/Core/InitializeCore.js')
+      ],
+      getPolyfills: require(path.join(root, 'node_modules/react-native/rn-get-polyfills')),
       processModuleFilter: moduleNotInBaseBundle
     },
     server: {port},

@@ -1,7 +1,34 @@
 {
   "modules": {
-    "@babel/runtime/helpers/interopRequireDefault.js": {
+    "react-native/Libraries/polyfills/Object.es6.js": {
       "id": 546
+    },
+    "react-native/Libraries/polyfills/console.js": {
+      "id": 547
+    },
+    "react-native/Libraries/polyfills/error-guard.js": {
+      "id": 548
+    },
+    "react-native/Libraries/polyfills/Number.es6.js": {
+      "id": 549
+    },
+    "react-native/Libraries/polyfills/String.prototype.es6.js": {
+      "id": 550
+    },
+    "react-native/Libraries/polyfills/Array.prototype.es6.js": {
+      "id": 551
+    },
+    "react-native/Libraries/polyfills/Array.es6.js": {
+      "id": 552
+    },
+    "react-native/Libraries/polyfills/Object.es7.js": {
+      "id": 553
+    },
+    "require-react-native/Libraries/Core/InitializeCore.js": {
+      "id": 554
+    },
+    "@babel/runtime/helpers/interopRequireDefault.js": {
+      "id": 555
     },
     "react/index.js": {
       "id": 12
@@ -13,13 +40,13 @@
       "id": 14
     },
     "@babel/runtime/helpers/extends.js": {
-      "id": 547
+      "id": 556
     },
     "react-native/Libraries/react-native/react-native-implementation.js": {
       "id": 24
     },
-    "react-native/node_modules/fbjs/lib/invariant.js": {
-      "id": 25
+    "fbjs/lib/invariant.js": {
+      "id": 18
     },
     "react-native/Libraries/Components/AccessibilityInfo/AccessibilityInfo.android.js": {
       "id": 26
@@ -28,22 +55,22 @@
       "id": 27
     },
     "@babel/runtime/helpers/objectWithoutProperties.js": {
-      "id": 548
+      "id": 557
     },
     "@babel/runtime/helpers/objectWithoutPropertiesLoose.js": {
-      "id": 549
+      "id": 558
     },
     "@babel/runtime/helpers/slicedToArray.js": {
-      "id": 550
+      "id": 559
     },
     "@babel/runtime/helpers/arrayWithHoles.js": {
-      "id": 551
+      "id": 560
     },
     "@babel/runtime/helpers/iterableToArrayLimit.js": {
-      "id": 552
+      "id": 561
     },
     "@babel/runtime/helpers/nonIterableRest.js": {
-      "id": 553
+      "id": 562
     },
     "react-native/Libraries/BatchedBridge/BatchedBridge.js": {
       "id": 28
@@ -52,25 +79,25 @@
       "id": 29
     },
     "@babel/runtime/helpers/toConsumableArray.js": {
-      "id": 554
+      "id": 563
     },
     "@babel/runtime/helpers/arrayWithoutHoles.js": {
-      "id": 555
+      "id": 564
     },
     "@babel/runtime/helpers/iterableToArray.js": {
-      "id": 556
+      "id": 565
     },
     "@babel/runtime/helpers/nonIterableSpread.js": {
-      "id": 557
+      "id": 566
     },
     "@babel/runtime/helpers/classCallCheck.js": {
-      "id": 558
+      "id": 567
     },
     "@babel/runtime/helpers/createClass.js": {
-      "id": 559
+      "id": 568
     },
     "react-native/Libraries/vendor/core/ErrorUtils.js": {
-      "id": 560
+      "id": 569
     },
     "react-native/Libraries/Performance/Systrace.js": {
       "id": 32
@@ -88,43 +115,43 @@
       "id": 43
     },
     "@babel/runtime/helpers/possibleConstructorReturn.js": {
-      "id": 561
-    },
-    "@babel/runtime/helpers/typeof.js": {
-      "id": 562
-    },
-    "@babel/runtime/helpers/assertThisInitialized.js": {
-      "id": 563
-    },
-    "@babel/runtime/helpers/getPrototypeOf.js": {
-      "id": 564
-    },
-    "@babel/runtime/helpers/get.js": {
-      "id": 565
-    },
-    "@babel/runtime/helpers/superPropBase.js": {
-      "id": 566
-    },
-    "@babel/runtime/helpers/inherits.js": {
-      "id": 567
-    },
-    "@babel/runtime/helpers/setPrototypeOf.js": {
-      "id": 568
-    },
-    "react-native/Libraries/vendor/emitter/EventEmitter.js": {
-      "id": 569
-    },
-    "react-native/Libraries/vendor/emitter/EmitterSubscription.js": {
       "id": 570
     },
-    "react-native/Libraries/vendor/emitter/EventSubscription.js": {
+    "@babel/runtime/helpers/typeof.js": {
       "id": 571
     },
-    "react-native/Libraries/vendor/emitter/EventSubscriptionVendor.js": {
+    "@babel/runtime/helpers/assertThisInitialized.js": {
       "id": 572
     },
-    "react-native/node_modules/fbjs/lib/emptyFunction.js": {
-      "id": 37
+    "@babel/runtime/helpers/getPrototypeOf.js": {
+      "id": 573
+    },
+    "@babel/runtime/helpers/get.js": {
+      "id": 574
+    },
+    "@babel/runtime/helpers/superPropBase.js": {
+      "id": 575
+    },
+    "@babel/runtime/helpers/inherits.js": {
+      "id": 576
+    },
+    "@babel/runtime/helpers/setPrototypeOf.js": {
+      "id": 577
+    },
+    "react-native/Libraries/vendor/emitter/EventEmitter.js": {
+      "id": 578
+    },
+    "react-native/Libraries/vendor/emitter/EmitterSubscription.js": {
+      "id": 579
+    },
+    "react-native/Libraries/vendor/emitter/EventSubscription.js": {
+      "id": 580
+    },
+    "react-native/Libraries/vendor/emitter/EventSubscriptionVendor.js": {
+      "id": 581
+    },
+    "fbjs/lib/emptyFunction.js": {
+      "id": 16
     },
     "react-native/Libraries/ReactNative/UIManager.js": {
       "id": 53
@@ -136,10 +163,10 @@
       "id": 57
     },
     "@babel/runtime/helpers/objectSpread.js": {
-      "id": 573
+      "id": 582
     },
     "@babel/runtime/helpers/defineProperty.js": {
-      "id": 574
+      "id": 583
     },
     "react-native/Libraries/react-native/React.js": {
       "id": 115
@@ -166,13 +193,13 @@
       "id": 58
     },
     "react-native/Libraries/Color/normalizeColor.js": {
-      "id": 575
+      "id": 584
     },
     "react-native/Libraries/Image/ImageResizeMode.js": {
       "id": 118
     },
-    "react-native/node_modules/fbjs/lib/keyMirror.js": {
-      "id": 119
+    "fbjs/lib/keyMirror.js": {
+      "id": 585
     },
     "react-native/Libraries/StyleSheet/LayoutPropTypes.js": {
       "id": 120
@@ -223,22 +250,22 @@
       "id": 114
     },
     "react-native/Libraries/Text/TextAncestor.js": {
-      "id": 576
+      "id": 586
     },
     "react-native/Libraries/Components/View/ViewNativeComponent.js": {
-      "id": 577
+      "id": 587
     },
     "react-native/Libraries/Renderer/shims/ReactNative.js": {
       "id": 61
     },
     "react-native/Libraries/Renderer/oss/ReactNativeRenderer-prod.js": {
-      "id": 578
+      "id": 588
     },
     "react-native/Libraries/Core/InitializeCore.js": {
       "id": 68
     },
     "react-native/Libraries/Utilities/PolyfillFunctions.js": {
-      "id": 579
+      "id": 589
     },
     "react-native/Libraries/vendor/core/_shouldPolyfillES6Collection.js": {
       "id": 99
@@ -249,8 +276,8 @@
     "react-native/Libraries/vendor/core/guid.js": {
       "id": 100
     },
-    "react-native/node_modules/fbjs/lib/isNode.js": {
-      "id": 101
+    "fbjs/lib/isNode.js": {
+      "id": 590
     },
     "react-native/Libraries/vendor/core/toIterator.js": {
       "id": 102
@@ -271,16 +298,16 @@
       "id": 67
     },
     "react-native/Libraries/Core/ReactNativeVersionCheck.js": {
-      "id": 580
+      "id": 591
     },
     "react-native/Libraries/Core/ReactNativeVersion.js": {
-      "id": 581
+      "id": 592
     },
     "react-native/Libraries/Promise.js": {
       "id": 74
     },
-    "react-native/node_modules/fbjs/lib/Promise.native.js": {
-      "id": 75
+    "fbjs/lib/Promise.native.js": {
+      "id": 593
     },
     "promise/setimmediate/es6-extensions.js": {
       "id": 76
@@ -297,17 +324,17 @@
     "react-native/Libraries/Core/Timers/JSTimers.js": {
       "id": 38
     },
-    "react-native/node_modules/fbjs/lib/performanceNow.js": {
-      "id": 33
+    "fbjs/lib/performanceNow.js": {
+      "id": 594
     },
-    "react-native/node_modules/fbjs/lib/performance.js": {
-      "id": 34
+    "fbjs/lib/performance.js": {
+      "id": 595
     },
-    "react-native/node_modules/fbjs/lib/ExecutionEnvironment.js": {
-      "id": 35
+    "fbjs/lib/ExecutionEnvironment.js": {
+      "id": 596
     },
-    "react-native/node_modules/fbjs/lib/warning.js": {
-      "id": 36
+    "fbjs/lib/warning.js": {
+      "id": 15
     },
     "react-native/Libraries/Network/XMLHttpRequest.js": {
       "id": 82
@@ -343,13 +370,13 @@
       "id": 90
     },
     "react-native/Libraries/Blob/Blob.js": {
-      "id": 582
+      "id": 597
     },
     "react-native/Libraries/Blob/BlobManager.js": {
-      "id": 583
+      "id": 598
     },
     "react-native/Libraries/Blob/BlobRegistry.js": {
-      "id": 584
+      "id": 599
     },
     "react-native/Libraries/Network/FormData.js": {
       "id": 91
@@ -358,7 +385,7 @@
       "id": 92
     },
     "react-native/Libraries/vendor/core/whatwg-fetch.js": {
-      "id": 585
+      "id": 600
     },
     "react-native/Libraries/WebSocket/WebSocket.js": {
       "id": 94
@@ -367,13 +394,13 @@
       "id": 95
     },
     "react-native/Libraries/Blob/File.js": {
-      "id": 586
+      "id": 601
     },
     "react-native/Libraries/Blob/FileReader.js": {
-      "id": 587
+      "id": 602
     },
     "react-native/Libraries/Blob/URL.js": {
-      "id": 588
+      "id": 603
     },
     "react-native/Libraries/Alert/Alert.js": {
       "id": 72
@@ -385,13 +412,13 @@
       "id": 96
     },
     "@babel/runtime/regenerator/index.js": {
-      "id": 589
+      "id": 604
     },
     "@babel/runtime/node_modules/regenerator-runtime/runtime-module.js": {
-      "id": 590
+      "id": 605
     },
     "@babel/runtime/node_modules/regenerator-runtime/runtime.js": {
-      "id": 591
+      "id": 606
     },
     "react-native/Libraries/Utilities/logError.js": {
       "id": 56
@@ -418,10 +445,10 @@
       "id": 106
     },
     "react-native/Libraries/Utilities/JSDevSupportModule.js": {
-      "id": 592
+      "id": 607
     },
     "react-native/Libraries/Renderer/shims/ReactNativeViewConfigRegistry.js": {
-      "id": 593
+      "id": 608
     },
     "react-native/Libraries/EventEmitter/RCTEventEmitter.js": {
       "id": 107
@@ -433,10 +460,10 @@
       "id": 52
     },
     "scheduler/index.js": {
-      "id": 594
+      "id": 609
     },
     "scheduler/cjs/scheduler.production.min.js": {
-      "id": 595
+      "id": 610
     },
     "react-native/Libraries/ReactNative/requireNativeComponent.js": {
       "id": 141
@@ -445,7 +472,7 @@
       "id": 148
     },
     "react-native/Libraries/ReactNative/getNativeComponentAttributes.js": {
-      "id": 596
+      "id": 611
     },
     "react-native/Libraries/Utilities/differ/insetsDiffer.js": {
       "id": 149
@@ -508,7 +535,7 @@
       "id": 164
     },
     "react-native/Libraries/Text/TextPropTypes.js": {
-      "id": 597
+      "id": 612
     },
     "react-native/Libraries/StyleSheet/EdgeInsetsPropType.js": {
       "id": 132
@@ -526,19 +553,19 @@
       "id": 166
     },
     "react-native/Libraries/Components/Touchable/PooledClass.js": {
-      "id": 598
+      "id": 613
     },
     "react-native/Libraries/Components/Touchable/Position.js": {
       "id": 168
     },
     "react-native/Libraries/Components/AppleTV/TVEventHandler.js": {
-      "id": 599
+      "id": 614
     },
-    "react-native/node_modules/fbjs/lib/TouchEventUtils.js": {
-      "id": 170
+    "fbjs/lib/TouchEventUtils.js": {
+      "id": 615
     },
-    "react-native/node_modules/fbjs/lib/nullthrows.js": {
-      "id": 195
+    "fbjs/lib/nullthrows.js": {
+      "id": 616
     },
     "react-native/Libraries/Components/Touchable/TouchableNativeFeedback.android.js": {
       "id": 172
@@ -555,11 +582,11 @@
     "create-react-class/factory.js": {
       "id": 23
     },
-    "fbjs/lib/emptyObject.js": {
-      "id": 17
+    "create-react-class/node_modules/fbjs/lib/emptyObject.js": {
+      "id": 617
     },
-    "fbjs/lib/invariant.js": {
-      "id": 18
+    "create-react-class/node_modules/fbjs/lib/invariant.js": {
+      "id": 618
     },
     "react-native/Libraries/Components/Touchable/ensurePositiveDelayProps.js": {
       "id": 175
@@ -577,22 +604,22 @@
       "id": 178
     },
     "react-native/Libraries/Animated/src/AnimatedEvent.js": {
-      "id": 600
+      "id": 619
     },
     "react-native/Libraries/Animated/src/nodes/AnimatedValue.js": {
-      "id": 601
+      "id": 620
     },
     "react-native/Libraries/Animated/src/nodes/AnimatedInterpolation.js": {
-      "id": 602
+      "id": 621
     },
     "react-native/Libraries/Animated/src/nodes/AnimatedNode.js": {
-      "id": 603
+      "id": 622
     },
     "react-native/Libraries/Animated/src/NativeAnimatedHelper.js": {
       "id": 182
     },
     "react-native/Libraries/Animated/src/nodes/AnimatedWithChildren.js": {
-      "id": 604
+      "id": 623
     },
     "react-native/Libraries/Interaction/InteractionManager.js": {
       "id": 179
@@ -601,52 +628,52 @@
       "id": 180
     },
     "react-native/Libraries/Animated/src/nodes/AnimatedAddition.js": {
-      "id": 605
+      "id": 624
     },
     "react-native/Libraries/Animated/src/nodes/AnimatedDiffClamp.js": {
-      "id": 606
+      "id": 625
     },
     "react-native/Libraries/Animated/src/nodes/AnimatedDivision.js": {
-      "id": 607
+      "id": 626
     },
     "react-native/Libraries/Animated/src/nodes/AnimatedModulo.js": {
-      "id": 608
+      "id": 627
     },
     "react-native/Libraries/Animated/src/nodes/AnimatedMultiplication.js": {
-      "id": 609
+      "id": 628
     },
     "react-native/Libraries/Animated/src/nodes/AnimatedProps.js": {
-      "id": 610
+      "id": 629
     },
     "react-native/Libraries/Animated/src/nodes/AnimatedStyle.js": {
-      "id": 611
+      "id": 630
     },
     "react-native/Libraries/Animated/src/nodes/AnimatedTransform.js": {
-      "id": 612
+      "id": 631
     },
     "react-native/Libraries/Animated/src/nodes/AnimatedSubtraction.js": {
-      "id": 613
+      "id": 632
     },
     "react-native/Libraries/Animated/src/nodes/AnimatedTracking.js": {
-      "id": 614
+      "id": 633
     },
     "react-native/Libraries/Animated/src/nodes/AnimatedValueXY.js": {
-      "id": 615
+      "id": 634
     },
     "react-native/Libraries/Animated/src/animations/DecayAnimation.js": {
-      "id": 616
+      "id": 635
     },
     "react-native/Libraries/Animated/src/animations/Animation.js": {
-      "id": 617
+      "id": 636
     },
     "react-native/Libraries/Animated/src/animations/SpringAnimation.js": {
-      "id": 618
+      "id": 637
     },
     "react-native/Libraries/Animated/src/SpringConfig.js": {
       "id": 183
     },
     "react-native/Libraries/Animated/src/animations/TimingAnimation.js": {
-      "id": 619
+      "id": 638
     },
     "react-native/Libraries/Animated/src/Easing.js": {
       "id": 186
@@ -655,7 +682,7 @@
       "id": 187
     },
     "react-native/Libraries/Animated/src/createAnimatedComponent.js": {
-      "id": 620
+      "id": 639
     },
     "react-native/Libraries/Lists/FlatList.js": {
       "id": 202
@@ -667,7 +694,7 @@
       "id": 204
     },
     "react-native/Libraries/Lists/ListView/InternalListViewType.js": {
-      "id": 621
+      "id": 640
     },
     "react-native/Libraries/Lists/ListView/ListViewDataSource.js": {
       "id": 205
@@ -700,7 +727,7 @@
       "id": 197
     },
     "react-native/Libraries/Components/ScrollView/InternalScrollViewType.js": {
-      "id": 622
+      "id": 641
     },
     "react-native/Libraries/Components/ScrollView/processDecelerationRate.js": {
       "id": 198
@@ -736,7 +763,7 @@
       "id": 131
     },
     "react-native/Libraries/Components/View/PlatformViewPropTypes.js": {
-      "id": 623
+      "id": 642
     },
     "react-native/Libraries/Components/AppleTV/TVViewPropTypes.js": {
       "id": 139
@@ -751,7 +778,7 @@
       "id": 60
     },
     "react-native/Libraries/Components/CheckBox/CheckBox.android.js": {
-      "id": 624
+      "id": 643
     },
     "react-native/Libraries/Components/DatePicker/DatePickerIOS.android.js": {
       "id": 199
@@ -775,13 +802,13 @@
       "id": 217
     },
     "react-native/Libraries/Components/TextInput/InputAccessoryView.js": {
-      "id": 625
+      "id": 644
     },
     "react-native/Libraries/Components/Keyboard/KeyboardAvoidingView.js": {
       "id": 218
     },
     "react-native/Libraries/Components/MaskedView/MaskedViewIOS.android.js": {
-      "id": 626
+      "id": 645
     },
     "react-native/Libraries/Components/UnimplementedViews/UnimplementedView.js": {
       "id": 142
@@ -811,7 +838,7 @@
       "id": 228
     },
     "react-native/Libraries/Components/SafeAreaView/SafeAreaView.android.js": {
-      "id": 627
+      "id": 646
     },
     "react-native/Libraries/Components/SegmentedControlIOS/SegmentedControlIOS.android.js": {
       "id": 231
@@ -826,10 +853,10 @@
       "id": 234
     },
     "react-native/Libraries/Components/Switch/SwitchNativeComponent.js": {
-      "id": 628
+      "id": 647
     },
     "react-native/Libraries/Experimental/SwipeableRow/SwipeableFlatList.js": {
-      "id": 629
+      "id": 648
     },
     "react-native/Libraries/Experimental/SwipeableRow/SwipeableRow.js": {
       "id": 237
@@ -838,7 +865,7 @@
       "id": 238
     },
     "react-native/Libraries/Interaction/TouchHistoryMath.js": {
-      "id": 630
+      "id": 649
     },
     "react-native/Libraries/Experimental/SwipeableRow/SwipeableListView.js": {
       "id": 235
@@ -859,16 +886,16 @@
       "id": 243
     },
     "react-native/Libraries/vendor/emitter/mixInEventEmitter.js": {
-      "id": 631
+      "id": 650
     },
     "react-native/Libraries/vendor/emitter/EventEmitterWithHolding.js": {
-      "id": 632
+      "id": 651
     },
     "react-native/Libraries/vendor/emitter/EventHolder.js": {
-      "id": 633
+      "id": 652
     },
-    "react-native/node_modules/fbjs/lib/keyOf.js": {
-      "id": 247
+    "fbjs/lib/keyOf.js": {
+      "id": 653
     },
     "react-native/Libraries/Components/ToastAndroid/ToastAndroid.android.js": {
       "id": 248
@@ -886,10 +913,10 @@
       "id": 253
     },
     "react-native/Libraries/Components/WebView/WebViewShared.js": {
-      "id": 634
+      "id": 654
     },
     "escape-string-regexp/index.js": {
-      "id": 635
+      "id": 655
     },
     "react-native/Libraries/ActionSheetIOS/ActionSheetIOS.js": {
       "id": 254
@@ -910,19 +937,19 @@
       "id": 260
     },
     "react-native/Libraries/ReactNative/ReactFabricIndicator.js": {
-      "id": 636
+      "id": 656
     },
     "react-native/Libraries/Utilities/BackHandler.android.js": {
       "id": 261
     },
     "react-native/Libraries/Renderer/shims/ReactFabric.js": {
-      "id": 637
+      "id": 657
     },
     "react-native/Libraries/Renderer/oss/ReactFabric-prod.js": {
-      "id": 638
+      "id": 658
     },
     "react-native/Libraries/ReactNative/FabricUIManager.js": {
-      "id": 639
+      "id": 659
     },
     "react-native/Libraries/AppState/AppState.js": {
       "id": 54
@@ -973,10 +1000,10 @@
       "id": 275
     },
     "react-native/Libraries/YellowBox/YellowBox.js": {
-      "id": 640
+      "id": 660
     },
     "react-native/Libraries/ReactNative/takeSnapshot.js": {
-      "id": 641
+      "id": 661
     },
     "react-native/Libraries/StyleSheet/PointPropType.js": {
       "id": 191
@@ -988,28 +1015,31 @@
       "id": 499
     },
     "react-native-cached-image/node_modules/lodash/lodash.js": {
-      "id": 642
+      "id": 662
     },
     "react-native-cached-image/node_modules/prop-types/index.js": {
-      "id": 643
+      "id": 663
     },
     "react-native-cached-image/node_modules/prop-types/factoryWithThrowingShims.js": {
-      "id": 644
+      "id": 664
     },
-    "fbjs/lib/emptyFunction.js": {
-      "id": 16
+    "react-native-cached-image/node_modules/fbjs/lib/emptyFunction.js": {
+      "id": 665
+    },
+    "react-native-cached-image/node_modules/fbjs/lib/invariant.js": {
+      "id": 666
     },
     "react-native-cached-image/node_modules/prop-types/lib/ReactPropTypesSecret.js": {
-      "id": 645
+      "id": 667
     },
     "react-native-cached-image/ImageCacheManagerOptionsPropTypes.js": {
-      "id": 646
+      "id": 668
     },
     "react-native-cached-image/ImageCacheManager.js": {
-      "id": 647
+      "id": 669
     },
     "react-native-cached-image/utils/fsUtils.js": {
-      "id": 648
+      "id": 670
     },
     "react-native-fetch-blob/index.js": {
       "id": 502
@@ -1021,13 +1051,13 @@
       "id": 504
     },
     "@babel/runtime/helpers/wrapNativeSuper.js": {
-      "id": 649
+      "id": 671
     },
     "@babel/runtime/helpers/isNativeFunction.js": {
-      "id": 650
+      "id": 672
     },
     "@babel/runtime/helpers/construct.js": {
-      "id": 651
+      "id": 673
     },
     "react-native-fetch-blob/fs.js": {
       "id": 505
@@ -1102,7 +1132,7 @@
       "id": 528
     },
     "react-native-cached-image/utils/pathUtils.js": {
-      "id": 652
+      "id": 674
     },
     "url-parse/index.js": {
       "id": 531
@@ -1120,37 +1150,37 @@
       "id": 530
     },
     "react-native-clcasher/MemoryCache.js": {
-      "id": 653
+      "id": 675
     },
     "react-native-cached-image/ImageCacheProvider.js": {
       "id": 501
     },
     "react-native-cached-image/ImageCachePreloader.js": {
-      "id": 654
+      "id": 676
     },
     "react-native-camera/src/index.js": {
-      "id": 655
+      "id": 677
     },
     "react-native-camera/src/Camera.js": {
-      "id": 656
+      "id": 678
     },
     "@babel/runtime/helpers/interopRequireWildcard.js": {
-      "id": 657
+      "id": 679
     },
     "react-native-camera/src/handlePermissions.js": {
-      "id": 658
+      "id": 680
     },
     "react-native-camera/src/RNCamera.js": {
-      "id": 659
+      "id": 681
     },
     "react-native-camera/src/FaceDetector.js": {
-      "id": 660
+      "id": 682
     },
     "react-native-video/Video.js": {
       "id": 540
     },
     "react-native-video/TextTrackType.js": {
-      "id": 661
+      "id": 683
     },
     "keymirror/index.js": {
       "id": 542
@@ -1165,7 +1195,7 @@
       "id": 545
     },
     "react-native-youtube/YouTubeStandalone.ios.js": {
-      "id": 662
+      "id": 684
     },
     "react-native-youtube/YouTubeStandalone.android.js": {
       "id": 544

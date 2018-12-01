@@ -10,6 +10,7 @@
     "rn-fetch-blob": "0.10.13"
   },
   "devDependencies": {
+    "metro": "^0.50.0",
     "rimraf": "^2.6.2"
   }
 }
