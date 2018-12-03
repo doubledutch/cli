@@ -52,41 +52,7 @@ async function serve(cmd) {
       const server = connect()
         .use('/ios', iosMiddleware.middleware)
         .use('/android', androidMiddleware.middleware)
-        // .use('/massaged', massageBundleMiddleware)
       server.listen(port)
-
-      function massageBundleMiddleware(req, res, next) {
-        const reqOpts = {
-          host: 'localhost',
-          port,
-          path: req.url.replace('/massaged', ''),
-          method: req.method,
-          headers: req.headers
-        }
-        const proxyReq = http.request(reqOpts, proxyRes => {
-          let responseString = ''
-
-          proxyRes.on("data", function (data) {
-            responseString += data
-            // save all the data from response
-          })
-          proxyRes.on("end", function () {
-            res.write(massage(responseString))
-            res.end()
-            // print to console when response ends
-          })
-        })
-
-        proxyReq.end()
-
-        function massage(bundle) {
-          const firstDefine = bundle.indexOf('\n__d')
-          if (firstDefine < 0) return bundle
-          const modified = bundle.substring(firstDefine)
-            .replace(/.*AppRegistry\.registerComponent\(/, '__registerComponent(')
-          return modified
-        }
-      }
     } else {
       console.log(chalk.yellow('mobile folder not found.'))
     }

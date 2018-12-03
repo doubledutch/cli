@@ -18,7 +18,7 @@ const fs = require('fs')
 const path = require('path')
 const metro = require('metro')
 
-module.exports = { build, createConnectMiddleware }
+module.exports = { build, createConnectMiddleware, runServer }
 
 function getMetroConfig(baseManifestFilename, root, port) {
   const baseManifest = fs.existsSync(baseManifestFilename) ? JSON.parse(fs.readFileSync(baseManifestFilename)) : null
@@ -75,10 +75,14 @@ async function build({baseManifestFilename, entry, out, platform, root, processM
 
 async function createConnectMiddleware({baseManifestFilename, root, port}) {
   const config = getMetroConfig(baseManifestFilename, root, port)
-  const opts = {
-  }
-
+  const opts = {}
   return await metro.createConnectMiddleware(config, opts)
+}
+
+async function runServer({baseManifestFilename, root, port}) {
+  const config = getMetroConfig(baseManifestFilename, root, port)
+  const opts = {}
+  return await metro.runServer(config, opts)
 }
 
 function idFactory(manifestFileContents, root) {
