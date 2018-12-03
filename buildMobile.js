@@ -25,7 +25,7 @@ module.exports = async function buildMobile(platform, root) {
   console.log(chalk.blue(`Building ${platform}`))
   const { metroBundle } = await packager.build({
     baseManifestFilename: path.join(__dirname, 'bundles', config.baseBundleVersion, `base.${platform}.${config.baseBundleVersion}.manifest`),
-    entry: `./index.${platform}.js`,
+    entry: `./index.js`,
     manifestOut: `./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest`,
     out: `./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle`,
     platform,
