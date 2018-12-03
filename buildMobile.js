@@ -23,7 +23,7 @@ const packager = require('./packager')
 
 module.exports = async function buildMobile(platform, root) {
   console.log(chalk.blue(`Building ${platform}`))
-  const { metroBundle } = await packager.build({
+  await packager.build({
     baseManifestFilename: path.join(__dirname, 'bundles', config.baseBundleVersion, `base.${platform}.${config.baseBundleVersion}.manifest`),
     entry: `./index.js`,
     manifestOut: `./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest`,
@@ -35,9 +35,7 @@ module.exports = async function buildMobile(platform, root) {
   // Remove the bundle prelude and `require` definition, which are in the base bundle
   const bundle = fs.readFileSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.js`, {encoding: 'utf8'})
   const firstDefine = bundle.indexOf('\n__d')
-  fs.writeFileSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.js`, bundle.substring(firstDefine))
+  fs.writeFileSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle`, bundle.substring(firstDefine))
 
-  fs.writeFileSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.sourcemap`, metroBundle.map)
   fs.renameSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.js`, `./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle`)
-  fs.renameSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.js.meta`, `./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.meta`)
 }
