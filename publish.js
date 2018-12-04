@@ -101,9 +101,15 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
         await promisedExec('pushd mobile && yarn && popd')
         // Build each mobile platform with the metro bundler: https://github.com/facebook/metro
         const root = path.join(process.cwd(), 'mobile')
-        await buildMobile('ios', root)
+        await buildMobile.current('ios', root)
         if (!cmd.iosOnly) {
-          await buildMobile('android', root)
+          await buildMobile.current('android', root)
+
+          prevs = packageJSON.doubledutch.previousBaseVersions
+          if (!prevs || (prevs.length && prevs.includes('0.46.4'))) {
+            console.log(chalk.blue('building for previous React Native 0.46.4...'))
+            await buildMobile.previous(root)
+          }
         }
       } else {
         console.log(chalk.yellow('mobile folder not found. Skipping build.'))
