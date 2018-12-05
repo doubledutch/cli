@@ -74,4 +74,9 @@ program
   .description('Dangerous. Renames the current extension. Run ONLY on a git repository with no pending commits.')
   .action(require('./rename'))
 
+program
+  .command('upgrade-rn')
+  .description('Dangerous. Updates the React Native version of the mobile folder of the current project to 0.57.5. Run ONLY on a git repository with no pending commits.')
+  .action(require('./upgradeReactNative'))
+
 program.parse(process.argv.length > 2 ? process.argv : [...process.argv, '--help'])
