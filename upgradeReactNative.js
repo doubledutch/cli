@@ -71,6 +71,8 @@ async function doUpgrade() {
   replaceInFile(path.join(process.cwd(), 'package.json'), /"baseBundleVersion"\s*:\s*"[0-9\.]*"/, `"baseBundleVersion": "${baseBundleVersion}"`)
   replaceInFile(path.join(process.cwd(), 'package.json'), /"dependencies"\s*:\s{[^}]*},?\s*/, '')
 
+  // NOTE: These versions must be updated when we move to a new base bundle / React Native version.
+
   console.log(chalk.blue('updating @doubledutch/rn-client to 5.0.0-alpha'))
   await promisedExec('pushd mobile && yarn remove @doubledutch/rn-client && yarn add @doubledutch/rn-client@5.0.0-alpha ; popd')
   console.log(chalk.blue('removing babel-plugin-transform-runtime'))
