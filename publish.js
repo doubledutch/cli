@@ -107,7 +107,7 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
 
           prevs = packageJSON.doubledutch.previousBaseVersions
           if (!prevs || (prevs.length && prevs.includes('0.46.4'))) {
-            console.log(chalk.blue('building for previous React Native 0.46.4...'))
+            console.log(chalk.blue('building for 0.46.4...'))
             await buildMobile.previous(root)
           }
         }
