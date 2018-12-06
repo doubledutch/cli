@@ -22,6 +22,9 @@ const { removeSync } = require('fs-extra')
 
 const { getCurrentExtension } = require('./utils')
 
+const oldBaseBundleVersion = '0.46.4'
+const baseBundleVersion = '0.57.5'
+
 module.exports = function upgradeReactNative() {
   doUpgrade()
   .catch(err => console.error(err))
@@ -30,7 +33,7 @@ async function doUpgrade() {
   const extension = getCurrentExtension()
   if (!extension) return
 
-  console.log(`${chalk.red('React Native 0.46.4')} ==> ${chalk.green('React Native 0.57.5')}`)
+  console.log(`${chalk.red(`React Native ${oldBaseBundleVersion}`)} ==> ${chalk.green(`React Native ${baseBundleVersion}`)}`)
 
   console.log(chalk.red('removing mobile/ios folder...'))
   removeSync('mobile/ios')
@@ -65,7 +68,7 @@ async function doUpgrade() {
   replaceInFile(path.join(process.cwd(), 'mobile/package.json'), /("scripts"\s*:\s*{[^}]*),(\s*})/, '$1$2')
 
   console.log(chalk.blue('updating root package.json...'))
-  replaceInFile(path.join(process.cwd(), 'package.json'), /"baseBundleVersion"\s*:\s*"0.46.4"/, '"baseBundleVersion": "0.57.5"')
+  replaceInFile(path.join(process.cwd(), 'package.json'), /"baseBundleVersion"\s*:\s*"[0-9\.]*"/, `"baseBundleVersion": "${baseBundleVersion}"`)
   replaceInFile(path.join(process.cwd(), 'package.json'), /"dependencies"\s*:\s{[^}]*},?\s*/, '')
 
   console.log(chalk.blue('updating @doubledutch/rn-client to 5.0.0-alpha'))
@@ -86,7 +89,7 @@ async function doUpgrade() {
   console.log(chalk.blue('updating devDependencies'))
   await promisedExec('pushd mobile && yarn remove babel-eslint babel-preset-env babel-preset-react && yarn add --dev babel-jest@23.6.0 jest@23.6.0 metro-react-native-babel-preset@0.50.0 react-test-renderer@16.6.1 ; popd')
 
-  console.log(chalk.green('DONE!  ') + chalk.blue('Mobile project upgraded to React Native 0.57.5'))
+  console.log(chalk.green('DONE!  ') + chalk.blue(`Mobile project upgraded to React Native ${baseBundleVersion}`))
 }
 
 function replaceInFile(fileName, from, to) {
