@@ -4,10 +4,9 @@ const fs = require('fs')
 const rimraf = require('rimraf')
 
 const { build } = require('../../packager.js')
-const { baseBundleVersion, previousBaseBundleVersion } = require('../../config')
+const { baseBundleVersion } = require('../../config')
 
 const bundleDir = `../${baseBundleVersion}`
-const previousBundleDir = `../${previousBaseBundleVersion}`
 
 console.log(`\n\n**************************************\n  Creating base bundles in ${bundleDir}\n**************************************\n\n`)
 
@@ -18,8 +17,7 @@ const platforms = ['ios', 'android']
 
 Promise.all(platforms.map(async platform => {
   const manifest = { modules: {} }
-  const previousBaseModules = previousBaseBundleVersion ? JSON.parse(fs.readFileSync(`${previousBundleDir}/base.${platform}.${previousBaseBundleVersion}.manifest`, {encoding: 'utf8'})).modules : {}
-  let id = Object.values(previousBaseModules).reduce((max, m) => Math.max(m.id, max), 0) + 1
+  let id = 1
 
   function processModuleFilter(m, i) {
     const isExcluded = [
@@ -32,7 +30,7 @@ Promise.all(platforms.map(async platform => {
     if (!isExcluded) {
       const path = m.path.replace(`${__dirname}/node_modules/`, '')
       if (!manifest.modules[path]) {
-        manifest.modules[path] = previousBaseModules[path] || {id: id++}
+        manifest.modules[path] = {id: id++}
       }
     }
 

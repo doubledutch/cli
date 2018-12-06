@@ -10,7 +10,11 @@
     "rn-fetch-blob": "0.10.13"
   },
   "devDependencies": {
-    "metro": "^0.50.0",
+    "babel-jest": "23.6.0",
+    "jest": "23.6.0",
+    "metro": "0.50.0",
+    "metro-react-native-babel-preset": "0.50.0",
+    "react-test-renderer": "16.6.1",
     "rimraf": "^2.6.2"
   }
 }

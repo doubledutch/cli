@@ -36,9 +36,7 @@ async function current(platform, root) {
   // Remove the bundle prelude and `require` definition, which are in the base bundle
   const bundle = fs.readFileSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.js`, {encoding: 'utf8'})
   const firstDefine = bundle.indexOf('\n__d')
-  fs.writeFileSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle`, bundle.substring(firstDefine))
-
-  fs.renameSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.js`, `./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle`)
+  fs.writeFileSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle`, bundle.replace(/\/\/# sourceMappingURL\=.*/, ''))
 }
 
 async function previous(root) {
