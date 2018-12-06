@@ -84,7 +84,7 @@ async function doUpgrade() {
   await promisedExec('pushd mobile && yarn remove react-native-fetch-blob && yarn add rn-fetch-blob@0.10.13 ; popd')
 
   console.log(chalk.blue('updating devDependencies'))
-  await promisedExec('pushd mobile && yarn remove babel-eslint babel-preset-env babel-preset-react && yarn add --dev babel-jest@23.6.0 jest@23.6.0 metro-react-native-babel-preset@0.49.2 react-test-renderer@16.6.1 ; popd')
+  await promisedExec('pushd mobile && yarn remove babel-eslint babel-preset-env babel-preset-react && yarn add --dev babel-jest@23.6.0 jest@23.6.0 metro-react-native-babel-preset@0.50.0 react-test-renderer@16.6.1 ; popd')
 
   console.log(chalk.green('DONE!  ') + chalk.blue('Mobile project upgraded to React Native 0.57.5'))
 }
