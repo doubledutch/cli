@@ -66,6 +66,7 @@ async function doUpgrade() {
 
   console.log(chalk.blue('updating mobile/package.json scripts...'))
   replaceInFile(path.join(process.cwd(), 'mobile/package.json'), /"start": ".*"/, '"start": "(sleep 5 ; echo ; echo ===================== ; echo Launch the DoubleDutch Simulator to connect. See https://github.com/doubledutch/simulator#doubledutch-extension-simulator ; echo ===================== ) & react-native start --port 8081"')
+  replaceInFile(path.join(process.cwd(), 'mobile/package.json'), /"clean": ".*"/, '"clean": "watchman watch-del-all && rm -rf node_modules && rm -rf /tmp/metro-bundler-cache-* && rm -rf /tmp/haste-map-react-native-packager-* && (yarn || npm i)"')
   replaceInFile(path.join(process.cwd(), 'mobile/package.json'), /\s*"ios": "[^"]*",?\n/, '\n')
   replaceInFile(path.join(process.cwd(), 'mobile/package.json'), /\s*"android": "[^"]*",?\n/, '\n')
   replaceInFile(path.join(process.cwd(), 'mobile/package.json'), /("scripts"\s*:\s*{[^}]*),(\s*})/, '$1$2')
@@ -76,8 +77,8 @@ async function doUpgrade() {
 
   // NOTE: These versions must be updated when we move to a new base bundle / React Native version.
 
-  console.log(chalk.blue('updating @doubledutch/rn-client to 5.0.0-alpha'))
-  await promisedExec('pushd mobile && yarn remove @doubledutch/rn-client && yarn add @doubledutch/rn-client@5.0.0-alpha ; popd')
+  console.log(chalk.blue('updating @doubledutch/rn-client to 5.0.1-alpha'))
+  await promisedExec('pushd mobile && yarn remove @doubledutch/rn-client && yarn add @doubledutch/rn-client@5.0.1-alpha ; popd')
   console.log(chalk.blue('removing babel-plugin-transform-runtime'))
   await promisedExec('pushd mobile && yarn remove babel-plugin-transform-runtime ; popd')
   console.log(chalk.blue('updating react & react-native'))
