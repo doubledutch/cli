@@ -41,6 +41,9 @@ async function doUpgrade() {
   console.log(chalk.red('removing mobile/android folder...'))
   removeSync('mobile/android')
 
+  console.log(chalk.red('removing unsupported mobile/web folder...'))
+  removeSync('mobile/web')
+
   console.log(chalk.green('adding .babelrc file...'))
   fs.writeFileSync(path.join(process.cwd(), 'mobile/.babelrc'), '{\n  "presets": ["module:metro-react-native-babel-preset"]\n}\n')
 
