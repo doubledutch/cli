@@ -73,6 +73,7 @@ async function doUpgrade() {
 
   console.log(chalk.blue('updating root package.json...'))
   replaceInFile(path.join(process.cwd(), 'package.json'), /"baseBundleVersion"\s*:\s*"[0-9\.]*"/, `"baseBundleVersion": "${baseBundleVersion}"`)
+  replaceInFile(path.join(process.cwd(), 'package.json'), /"start"\s*:\s*"[^"]*"/, `"start": "pushd mobile && npm start && popd && pushd web/admin && npm start && popd"`)
   replaceInFile(path.join(process.cwd(), 'package.json'), /"dependencies"\s*:\s{[^}]*},?\s*/, '')
 
   // NOTE: These versions must be updated when we move to a new base bundle / React Native version.
