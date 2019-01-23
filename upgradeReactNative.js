@@ -78,8 +78,8 @@ async function doUpgrade() {
 
   // NOTE: These versions must be updated when we move to a new base bundle / React Native version.
 
-  console.log(chalk.blue('updating @doubledutch/rn-client to 5.0.1-alpha'))
-  await promisedExec('pushd mobile && yarn remove @doubledutch/rn-client && yarn add @doubledutch/rn-client@5.0.1-alpha ; popd')
+  console.log(chalk.blue('updating @doubledutch/rn-client to 5.0.2-alpha'))
+  await promisedExec('pushd mobile && yarn remove @doubledutch/rn-client && yarn add @doubledutch/rn-client@5.0.2-alpha ; popd')
   console.log(chalk.blue('removing babel-plugin-transform-runtime'))
   await promisedExec('pushd mobile && yarn remove babel-plugin-transform-runtime ; popd')
   console.log(chalk.blue('updating react & react-native'))
