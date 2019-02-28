@@ -17,7 +17,8 @@
 const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
-const promisedExec = require('promised-exec')
+const {execSync} = require('child_process')
+const exec = command => execSync(command, {stdio: 'inherit'})
 
 const config = require('./config')
 const packager = require('./packager')
@@ -39,14 +40,45 @@ async function current(platform, root) {
   fs.writeFileSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle`, bundle.replace(/\/\/# sourceMappingURL\=.*/, ''))
 }
 
-async function previous(root) {
-  const tmp = `${process.env.TMPDIR}doubledutch-mobile`
-  await promisedExec(`rm -rf ${tmp}`)
-  await promisedExec(`mkdir ${tmp}`)
-  await promisedExec(`cp -R ${root.replace(' ', '\\ ')} ${tmp} && cp ${tmp}/mobile/index.js ${tmp}/mobile/index.ios.js && cp ${tmp}/mobile/index.js ${tmp}/mobile/index.android.js && rm ${tmp}/mobile/.babelrc`)
-  await promisedExec(`mkdir ${tmp}/mobile/build && mkdir ${tmp}/mobile/build/bundle`)
-  console.log(chalk.blue('temporarily installing previous versions of packages...'))
-  await promisedExec(`pushd ${tmp}/mobile && yarn remove @doubledutch/rn-client react react-native react-native-camera rn-fetch-blob react-native-video react-native-youtube ; yarn add @doubledutch/rn-client@4.x babel-plugin-transform-runtime react@16.0.0-alpha.12 react-addons-update@15.6.0 react-native@0.46.4 react-native-camera@0.10.0 react-native-fetch-blob@0.10.8 react-native-video@2.0.0 react-native-youtube@1.1.0 babel-preset-env@1.6.x babel-preset-react@6.24.x @doubledutch/cli@1.7.x && popd`)
+async function previous(root, extensionName) {
+  const tmp = `${process.env.TMPDIR}doubledutch-extension-${extensionName}`
+  exec(`(mkdir ${tmp} && mkdir ${tmp}/mobile && mkdir ${tmp}/mobile/build && mkdir ${tmp}/mobile/build/bundle) || echo "Previously built. Reusing folder."`)
+
+  // Link folders/files that we don't have to modify.  Copy and modify what we must.
+  // Keep node_modules and yarn.lock for faster subsequent builds.
+  const prevMobileFiles = fs.readdirSync(path.join(tmp, 'mobile'))
+    .filter(x => !['node_modules', 'build', 'yarn.lock'].includes(x))
+  for (let i = 0; i < prevMobileFiles.length; ++i) {
+    const x = prevMobileFiles[i]
+    exec(`rm -rf ${path.join(tmp, 'mobile', x)}`)
+  }
+
+  const mobileFiles = fs.readdirSync(root)
+    .filter(x => !['node_modules', '.babelrc', 'build', 'package.json', 'yarn.lock', 'yarn-error.log'].includes(x))
+  for (let i = 0; i < mobileFiles.length; ++i) {
+    const x = mobileFiles[i]
+    exec(`cp -R ${path.join(root, x)} ${path.join(tmp, 'mobile', x)}`)
+    if (x === 'index.js') {
+      exec(`cp ${path.join(root, x)} ${path.join(tmp, 'mobile', 'index.ios.js')}`)
+      exec(`cp ${path.join(root, x)} ${path.join(tmp, 'mobile', 'index.android.js')}`)
+    }
+  }
+
+  const packageJSON = fs.readFileSync(path.join(root, 'package.json'), {encoding: 'utf8'})
+  const modifiedPackageJSON = packageJSON
+    .replace(/"@doubledutch\/rn\-client": "[^"]*"/, '"@doubledutch/rn-client": "4.x"')
+    .replace(/"react": "[^"]*"/, '"react": "16.0.0-alpha.12"')
+    .replace(/"react\-native": "[^"]*"/, '"react-native": "0.46.4"')
+    .replace(/"react\-native\-camera": "[^"]*"/, '"react-native-camera": "0.10.0"')
+    .replace(/"rn\-fetch\-blob": "[^"]*"/, '"react-native-fetch-blob": "0.10.8"')
+    .replace(/"react\-native\-video": "[^"]*"/, '"react-native-video": "2.0.0"')
+    .replace(/"react\-native\-youtube": "[^"]*"/, '"react-native-youtube": "1.1.0"')
+    .replace(/"dependencies"\s*:\s*{/, '"dependencies": {\n    "babel-plugin-transform-runtime": "*",\n    "react-addons-update": "15.6.0",\n    "babel-preset-env": "1.6.x",\n    "babel-preset-react": "6.24.x",\n    "@doubledutch/cli": "1.7.x",')
+  fs.writeFileSync(path.join(tmp, 'mobile', 'package.json'), modifiedPackageJSON, {encoding: 'utf8'})
+
+    
+  console.log(chalk.blue('installing mobile dependencies (0.46.4)...'))
+  exec(`pushd ${tmp}/mobile && yarn && popd`)
   fs.writeFileSync(`${tmp}/mobile/buildPrevious.js`, `
     const buildMobile = require('@doubledutch/cli/buildMobile')
     buildMobile('ios', '${tmp}/mobile').then(() => {
@@ -54,8 +86,8 @@ async function previous(root) {
     })
   `, {encoding: 'utf8'})
   console.log(chalk.blue('bundling...'))
-  await promisedExec(`pushd ${tmp}/mobile && node buildPrevious && popd`)
-  await promisedExec(`mv ${tmp}/mobile/build/bundle/* ${path.join(root, '../build/bundle/')}`)
+  exec(`pushd ${tmp}/mobile && node buildPrevious && popd`)
+  exec(`mv ${tmp}/mobile/build/bundle/* ${path.join(root, '../build/bundle/')}`)
 }
 
 module.exports = { current, previous }
