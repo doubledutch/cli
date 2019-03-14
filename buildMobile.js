@@ -45,16 +45,16 @@ async function previous(root, extensionName) {
   exec(`(mkdir ${tmp} && mkdir ${tmp}/mobile && mkdir ${tmp}/mobile/build && mkdir ${tmp}/mobile/build/bundle) || echo "Previously built. Reusing folder."`)
 
   // Link folders/files that we don't have to modify.  Copy and modify what we must.
-  // Keep node_modules and yarn.lock for faster subsequent builds.
+  // Keep node_modules and package-lock.json for faster subsequent builds.
   const prevMobileFiles = fs.readdirSync(path.join(tmp, 'mobile'))
-    .filter(x => !['node_modules', 'build', 'yarn.lock'].includes(x))
+    .filter(x => !['node_modules', 'build', 'package-lock.json', 'yarn.lock'].includes(x))
   for (let i = 0; i < prevMobileFiles.length; ++i) {
     const x = prevMobileFiles[i]
     exec(`rm -rf ${path.join(tmp, 'mobile', x)}`)
   }
 
   const mobileFiles = fs.readdirSync(root)
-    .filter(x => !['node_modules', '.babelrc', 'build', 'package.json', 'yarn.lock', 'yarn-error.log'].includes(x))
+    .filter(x => !['node_modules', '.babelrc', 'build', 'package.json', 'package-lock.json', 'yarn.lock', 'yarn-error.log'].includes(x))
   for (let i = 0; i < mobileFiles.length; ++i) {
     const x = mobileFiles[i]
     exec(`cp -R ${path.join(root, x)} ${path.join(tmp, 'mobile', x)}`)
@@ -78,7 +78,7 @@ async function previous(root, extensionName) {
 
     
   console.log(chalk.blue('installing mobile dependencies (0.46.4)...'))
-  exec(`pushd ${tmp}/mobile && yarn && popd`)
+  exec(`pushd ${tmp}/mobile && npm install && popd`)
   fs.writeFileSync(`${tmp}/mobile/buildPrevious.js`, `
     const buildMobile = require('@doubledutch/cli/buildMobile')
     buildMobile('ios', '${tmp}/mobile').then(() => {

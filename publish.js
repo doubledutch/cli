@@ -98,7 +98,7 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
 
     if (!cmd.skipBuild && !cmd.apiOnly) {
       if (fs.existsSync('mobile')) {
-        await promisedExec('pushd mobile && yarn && popd')
+        await promisedExec('pushd mobile && npm install && popd')
         // Build each mobile platform with the metro bundler: https://github.com/facebook/metro
         const root = path.join(process.cwd(), 'mobile')
         await buildMobile.current('ios', root)
@@ -122,7 +122,7 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
       if (!cmd.apiOnly && !cmd.iosOnly) {
         if (fileExists('web/admin')) {
           commands.push(
-            [`pushd web/admin && yarn && npm run build && popd`, chalk.blue('Generating Admin web bundle')],
+            [`pushd web/admin && npm install && npm run build && popd`, chalk.blue('Generating Admin web bundle')],
             [`cp -r web/admin/build/ build/site/private/`, chalk.blue('Copying Admin web bundle')]
           )
         } else {
@@ -146,7 +146,7 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
       if (!cmd.iosOnly) {
         if (fileExists('api')) {
           commands.push(
-            [`pushd api && yarn && npm run build && popd`, chalk.blue('Generating API bundle')],
+            [`pushd api && npm install && npm run build && popd`, chalk.blue('Generating API bundle')],
           )
         } else {
           commands.push(

@@ -66,7 +66,7 @@ async function doUpgrade() {
 
   console.log(chalk.blue('updating mobile/package.json scripts...'))
   replaceInFile(path.join(process.cwd(), 'mobile/package.json'), /"start": ".*"/, '"start": "(sleep 5 ; echo ; echo ===================== ; echo Launch the DoubleDutch Simulator to connect. See https://github.com/doubledutch/simulator#doubledutch-extension-simulator ; echo ===================== ) & react-native start --port 8081"')
-  replaceInFile(path.join(process.cwd(), 'mobile/package.json'), /"clean": ".*"/, '"clean": "watchman watch-del-all && rm -rf node_modules && rm -rf /tmp/metro-bundler-cache-* && rm -rf /tmp/haste-map-react-native-packager-* && (yarn || npm i)"')
+  replaceInFile(path.join(process.cwd(), 'mobile/package.json'), /"clean": ".*"/, '"clean": "watchman watch-del-all && rm -rf node_modules && rm -rf /tmp/metro-bundler-cache-* && rm -rf /tmp/haste-map-react-native-packager-* && npm i"')
   replaceInFile(path.join(process.cwd(), 'mobile/package.json'), /\s*"ios": "[^"]*",?\n/, '\n')
   replaceInFile(path.join(process.cwd(), 'mobile/package.json'), /\s*"android": "[^"]*",?\n/, '\n')
   replaceInFile(path.join(process.cwd(), 'mobile/package.json'), /("scripts"\s*:\s*{[^}]*),(\s*})/, '$1$2')
@@ -79,22 +79,22 @@ async function doUpgrade() {
   // NOTE: These versions must be updated when we move to a new base bundle / React Native version.
 
   console.log(chalk.blue('updating @doubledutch/rn-client to 5.0.2-alpha'))
-  await promisedExec('pushd mobile && yarn remove @doubledutch/rn-client && yarn add @doubledutch/rn-client@5.0.2-alpha ; popd')
+  await promisedExec('pushd mobile && npm uninstall @doubledutch/rn-client && npm install --save @doubledutch/rn-client@5.0.2-alpha ; popd')
   console.log(chalk.blue('removing babel-plugin-transform-runtime'))
-  await promisedExec('pushd mobile && yarn remove babel-plugin-transform-runtime ; popd')
+  await promisedExec('pushd mobile && npm uninstall babel-plugin-transform-runtime ; popd')
   console.log(chalk.blue('updating react & react-native'))
-  await promisedExec('pushd mobile && yarn remove react react-native && yarn add react@16.6.1 react-native@0.57.5 ; popd')
+  await promisedExec('pushd mobile && npm uninstall react react-native && npm install --save react@16.6.1 react-native@0.57.5 ; popd')
   console.log(chalk.blue('updating react-native-camera'))
-  await promisedExec('pushd mobile && yarn remove react-native-camera && yarn add react-native-camera@1.4.3 ; popd')
+  await promisedExec('pushd mobile && npm uninstall react-native-camera && npm install --save react-native-camera@1.4.3 ; popd')
   console.log(chalk.blue('updating react-native-video'))
-  await promisedExec('pushd mobile && yarn remove react-native-video && yarn add react-native-video@3.2.1 ; popd')
+  await promisedExec('pushd mobile && npm uninstall react-native-video && npm install --save react-native-video@3.2.1 ; popd')
   console.log(chalk.blue('updating react-native-youtube'))
-  await promisedExec('pushd mobile && yarn remove react-native-youtube && yarn add react-native-youtube@1.1.0 ; popd')
+  await promisedExec('pushd mobile && npm uninstall react-native-youtube && npm install --save react-native-youtube@1.1.0 ; popd')
   console.log(chalk.blue('updating react-native-fetch-blob to rn-fetch-blob'))
-  await promisedExec('pushd mobile && yarn remove react-native-fetch-blob && yarn add rn-fetch-blob@0.10.13 ; popd')
+  await promisedExec('pushd mobile && npm uninstall react-native-fetch-blob && npm install --save rn-fetch-blob@0.10.13 ; popd')
 
   console.log(chalk.blue('updating devDependencies'))
-  await promisedExec('pushd mobile && yarn remove babel-eslint babel-preset-env babel-preset-react && yarn add --dev babel-jest@23.6.0 jest@23.6.0 metro-react-native-babel-preset@0.50.0 react-test-renderer@16.6.1 ; popd')
+  await promisedExec('pushd mobile && npm uninstall babel-eslint babel-preset-env babel-preset-react && npm install --save-dev babel-jest@23.6.0 jest@23.6.0 metro-react-native-babel-preset@0.50.0 react-test-renderer@16.6.1 ; popd')
 
   console.log(chalk.green('DONE!  ') + chalk.blue(`Mobile project upgraded to React Native ${baseBundleVersion}`))
 }

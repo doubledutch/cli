@@ -8,7 +8,6 @@ Currently, DoubleDutch developer tools for React Native extensions are only supp
 ### Prerequisites
 
 - [NodeJS](https://nodejs.org)
-- [Yarn](https://yarnpkg.com/en/docs/install)
 - [XCode](https://developer.apple.com/xcode/) (to run in iOS simulator)
 
 ### Getting Started

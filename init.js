@@ -21,7 +21,6 @@ const { spawn } = require('child_process')
 const chalk = require('chalk')
 const inquirer = require('inquirer')
 const { reactNativeVersion, reactVersion, baseBundleVersion } = require('./config')
-const { enforceYarnInstallation } = require('./utils/yarn')
 
 module.exports = function init(cmd, options) {
   assertFolderEmpty()
@@ -40,7 +39,7 @@ module.exports = function init(cmd, options) {
       spawn('./doubledutch.sh', [], {shell: true, stdio: 'inherit'}).on('exit', (code, signal) => {
         console.log('Finished creating project')
         fs.unlinkSync('./doubledutch.sh')
-        fs.unlinkSync('./yarn.lock')
+        fs.unlinkSync('./package-lock.json')
         removeSync('./node_modules')
         removeSync('./tmp')
         resolve()      
@@ -79,14 +78,14 @@ const makePackageJSON = (projectName) => `\
 const nativeModules = ['react-native-camera@0.10.0', 'react-native-fetch-blob@0.10.8', 'react-native-video@2.0.0', 'react-native-youtube@1.0.1']
 const makeLinks = () => nativeModules.map(makeLink).join('\n')
 const makeLink = (module) =>
-  `echo Adding ${module}...\n` + `yarn add ${module}\n` + `echo Linking ${module}...\n` + `node node_modules/react-native/local-cli/cli.js link ${module}`
+  `echo Adding ${module}...\n` + `npm install --save ${module}\n` + `echo Linking ${module}...\n` + `node node_modules/react-native/local-cli/cli.js link ${module}`
 
 const doubledutchSH = (projectName, buildSettings) => `\
 #!/usr/bin/env bash
 if ! xcodebuild -checkFirstLaunchStatus ; then echo; echo "XCode EULA has not been accepted. Launch XCode and accept the license or run"; echo "xcodebuild -license accept"; echo; exit 1; fi
 date
 echo Initializing '${chalk.green(projectName)}'
-yarn
+npm install
 echo ${chalk.green('Cloning extension-sample')}
 git clone https://github.com/doubledutch/extension-sample.git tmp
 rm -rf tmp/.git
@@ -107,23 +106,23 @@ sed -i '' 's/extension-sample/${projectName}/' index.ios.js
 sed -i '' 's/extension-sample/${projectName}/' index.android.js
 sed -i '' 's/extension-sample/${projectName}/' index.web.js
 sed -i '' 's/extension-sample/${projectName}/' src/home-view.js
-yarn
+npm install
 echo 'Fixing up xcode to use DD packager'
 sed -i.bak s/node_modules\\\\/react-native\\\\/packager/node_modules\\\\/dd-rn-packager\\\\/react-native\\\\/packager/g ios/${projectName}.xcodeproj/project.pbxproj
 sed -i.bak s/packager\\\\/launchPackager.command/..\\\\/dd-rn-packager\\\\/react-native\\\\/packager\\\\/launchPackager.command/g node_modules/react-native/React/React.xcodeproj/project.pbxproj
 echo ${chalk.green('Installing mobile dependencies')}
-yarn
+npm install
 ${makeLinks()}
 node ./node_modules/rnpm/bin/cli link
 popd` : `echo ${chalk.yellow('mobile disabled')}; rm -rf mobile`}
 ${buildSettings.adminWeb ? `\
 pushd web/admin
 sed -i '' 's/extension-sample/${projectName}/' src/App.js
-yarn
+npm install
 popd` : `echo ${chalk.yellow('web/admin disabled')}; rm -rf web/admin`}
 ${buildSettings.attendeeWeb ? `\
 pushd web/attendee
-yarn
+npm install
 popd` : `echo ${chalk.yellow('web/attendee disabled')}; rm -rf web/attendee`}
 date
 `

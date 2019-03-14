@@ -16,7 +16,6 @@ module.exports = {
   promisify,
   requestAccessToken,
   saveConfig,
-  yarn: require('./yarn')
 }
 
 function resolveHome(filepath) {
