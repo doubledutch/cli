@@ -22,7 +22,7 @@
     "developer"
   ],
   "author": "DoubleDutch",
-  "license": "apache-2.0",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/doubledutch/cli/issues"
   },
@@ -35,7 +35,7 @@
     "firebase": "^5.5.8",
     "fs-extra": "^4.0.2",
     "inquirer": "^3.3.0",
-    "metro": "^0.50.0",
+    "metro": "^0.53.1",
     "metro-react-native-babel-preset": "^0.50.0",
     "promised-exec": "^1.0.1",
     "superagent": "^3.6.0",
