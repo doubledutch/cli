@@ -34,7 +34,7 @@ function getMetroConfig(baseManifestFilename, root, port) {
       blacklistRE: /(.*\/__fixtures__\/.*|node_modules[\/\\]react[\/\\]dist[\/\\].*|website\/node_modules\/.*|heapCapture\/bundle\.js|.*\/__tests__\/.*)$/,
     },
     transformer: {
-      babelTransformerPath: require.resolve('metro/src/reactNativeTransformer')
+      babelTransformerPath: require.resolve('metro-react-native-babel-transformer')
     },
     serializer: {
       createModuleIdFactory: idFactory(baseManifest, root),
