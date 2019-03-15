@@ -28,17 +28,17 @@
   },
   "homepage": "https://github.com/doubledutch/cli#readme",
   "dependencies": {
-    "chalk": "^2.1.0",
-    "commander": "^2.11.0",
+    "chalk": "^2.4.2",
+    "commander": "^2.19.0",
     "connect": "^3.6.6",
-    "diff-match-patch": "^1.0.0",
-    "firebase": "^5.5.8",
+    "diff-match-patch": "^1.0.4",
+    "firebase": "^5.9.0",
     "fs-extra": "^4.0.2",
     "inquirer": "^3.3.0",
     "metro": "^0.53.1",
-    "metro-react-native-babel-preset": "^0.50.0",
+    "metro-react-native-babel-preset": "^0.53.1",
     "promised-exec": "^1.0.1",
     "superagent": "^3.6.0",
-    "update-notifier": "^2.2.0"
+    "update-notifier": "^2.5.0"
   }
 }
