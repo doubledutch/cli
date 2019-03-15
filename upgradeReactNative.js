@@ -23,7 +23,7 @@ const { removeSync } = require('fs-extra')
 const { getCurrentExtension } = require('./utils')
 
 const oldBaseBundleVersion = '0.46.4'
-const baseBundleVersion = '0.57.5'
+const baseBundleVersion = '0.59.1'
 
 module.exports = function upgradeReactNative() {
   doUpgrade()
@@ -83,18 +83,18 @@ async function doUpgrade() {
   console.log(chalk.blue('removing babel-plugin-transform-runtime'))
   await promisedExec('pushd mobile && npm uninstall babel-plugin-transform-runtime ; popd')
   console.log(chalk.blue('updating react & react-native'))
-  await promisedExec('pushd mobile && npm uninstall react react-native && npm install --save react@16.6.1 react-native@0.57.5 ; popd')
+  await promisedExec('pushd mobile && npm uninstall react react-native && npm install --save react@16.8.3 react-native@0.59.1 ; popd')
   console.log(chalk.blue('updating react-native-camera'))
-  await promisedExec('pushd mobile && npm uninstall react-native-camera && npm install --save react-native-camera@1.4.3 ; popd')
+  await promisedExec('pushd mobile && npm uninstall react-native-camera && npm install --save react-native-camera@2.0.1 ; popd')
   console.log(chalk.blue('updating react-native-video'))
-  await promisedExec('pushd mobile && npm uninstall react-native-video && npm install --save react-native-video@3.2.1 ; popd')
+  await promisedExec('pushd mobile && npm uninstall react-native-video && npm install --save react-native-video@4.4.0 ; popd')
   console.log(chalk.blue('updating react-native-youtube'))
   await promisedExec('pushd mobile && npm uninstall react-native-youtube && npm install --save react-native-youtube@1.1.0 ; popd')
   console.log(chalk.blue('updating react-native-fetch-blob to rn-fetch-blob'))
-  await promisedExec('pushd mobile && npm uninstall react-native-fetch-blob && npm install --save rn-fetch-blob@0.10.13 ; popd')
+  await promisedExec('pushd mobile && npm uninstall react-native-fetch-blob && npm install --save rn-fetch-blob@0.10.15 ; popd')
 
   console.log(chalk.blue('updating devDependencies'))
-  await promisedExec('pushd mobile && npm uninstall babel-eslint babel-preset-env babel-preset-react && npm install --save-dev babel-jest@23.6.0 jest@23.6.0 metro-react-native-babel-preset@0.50.0 react-test-renderer@16.6.1 ; popd')
+  await promisedExec('pushd mobile && npm uninstall babel-eslint babel-preset-env babel-preset-react && npm install --save-dev babel-jest jest metro-react-native-babel-preset react-test-renderer@16.8.3 ; popd')
 
   console.log(chalk.green('DONE!  ') + chalk.blue(`Mobile project upgraded to React Native ${baseBundleVersion}`))
 }

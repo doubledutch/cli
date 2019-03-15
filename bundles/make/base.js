@@ -6,8 +6,7 @@
 
 import React from 'react'
 import ReactNative from 'react-native'
-import CachedImage from 'react-native-cached-image'
-import FetchBlob from 'react-native-fetch-blob'
+import FetchBlob from 'rn-fetch-blob'
 import Camera from 'react-native-camera'
 import Video from 'react-native-video'
-import Youtube from 'react-native-youtube'
+import YouTube from 'react-native-youtube'
