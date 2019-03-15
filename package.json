@@ -33,12 +33,13 @@
     "connect": "^3.6.6",
     "diff-match-patch": "^1.0.4",
     "firebase": "^5.9.0",
-    "fs-extra": "^4.0.2",
-    "inquirer": "^3.3.0",
+    "fs-extra": "^7.0.1",
+    "inquirer": "^6.2.2",
     "metro": "^0.53.1",
     "metro-react-native-babel-preset": "^0.53.1",
+    "metro-react-native-babel-transformer": "^0.53.1",
     "promised-exec": "^1.0.1",
-    "superagent": "^3.6.0",
+    "superagent": "^4.1.0",
     "update-notifier": "^2.5.0"
   }
 }
