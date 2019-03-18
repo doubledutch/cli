@@ -1,6 +1,6 @@
 {
   "name": "@doubledutch/cli",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "DoubleDutch developer command-line interface.",
   "main": "index.js",
   "scripts": {
