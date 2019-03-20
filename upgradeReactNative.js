@@ -44,8 +44,8 @@ async function doUpgrade() {
   console.log(chalk.red('removing unsupported mobile/web folder...'))
   removeSync('mobile/web')
 
-  console.log(chalk.green('adding .babelrc file...'))
-  fs.writeFileSync(path.join(process.cwd(), 'mobile/.babelrc'), '{\n  "presets": ["module:metro-react-native-babel-preset"]\n}\n')
+  console.log(chalk.green('adding babel.config.js file...'))
+  fs.writeFileSync(path.join(process.cwd(), 'mobile/babel.config.js'), "module.exports = {\n  presets: ['module:metro-react-native-babel-preset'],\n}\n")
 
   console.log(chalk.green('adding .watchmanconfig file...'))
   fs.writeFileSync(path.join(process.cwd(), 'mobile/.watchmanconfig'), '{}\n')

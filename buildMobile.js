@@ -54,7 +54,7 @@ async function previous(root, extensionName) {
   }
 
   const mobileFiles = fs.readdirSync(root)
-    .filter(x => !['node_modules', '.babelrc', 'build', 'package.json', 'package-lock.json', 'yarn.lock', 'yarn-error.log'].includes(x))
+    .filter(x => !['node_modules', '.babelrc', 'babel.config.js', 'build', 'package.json', 'package-lock.json', 'yarn.lock', 'yarn-error.log'].includes(x))
   for (let i = 0; i < mobileFiles.length; ++i) {
     const x = mobileFiles[i]
     exec(`cp -R ${path.join(root, x)} ${path.join(tmp, 'mobile', x)}`)
