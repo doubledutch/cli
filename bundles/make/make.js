@@ -8,6 +8,8 @@ const { baseBundleVersion } = require('../../config')
 
 const bundleDir = `../${baseBundleVersion}`
 
+const reserveModuleIdsUpTo = 1000
+
 console.log(`\n\n**************************************\n  Creating base bundles in ${bundleDir}\n**************************************\n\n`)
 
 rimraf.sync(bundleDir)
@@ -51,7 +53,6 @@ Promise.all(platforms.map(async platform => {
 
   const metroBundle = await build({
     entry: './base.js',
-    manifestOut: `${bundleDir}/base.${platform}.${baseBundleVersion}.manifest`,
     out: `${bundleDir}/base.${platform}.${baseBundleVersion}.bundle`,
     platform,
     root: process.cwd(),
@@ -59,6 +60,7 @@ Promise.all(platforms.map(async platform => {
     createModuleIdFactory
   })
 
+  if (id <= reserveModuleIdsUpTo) manifest.modules.__PLACEHOLDER__ = { id: reserveModuleIdsUpTo }
   fs.writeFileSync(`${bundleDir}/base.${platform}.${baseBundleVersion}.manifest`, JSON.stringify(manifest, null, 2))
 
   const bundle = fs.readFileSync(`${bundleDir}/base.${platform}.${baseBundleVersion}.bundle.js`, {encoding: 'utf8'})

@@ -1211,6 +1211,9 @@
     },
     "react-native-mail/index.js": {
       "id": 404
+    },
+    "__PLACEHOLDER__": {
+      "id": 1000
     }
   }
 }
