@@ -16,8 +16,8 @@
 
 module.exports = {
   reactVersion: '16.8.3',
-  reactNativeVersion: '0.59.1',
-  baseBundleVersion: '0.59.1',
+  reactNativeVersion: '0.59.2',
+  baseBundleVersion: '0.59.2',
   identity: {
     rootUrl: 'https://us-identity.doubledutch.me',
     cli: {

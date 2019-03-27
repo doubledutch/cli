@@ -1208,6 +1208,9 @@
     },
     "react-native-youtube/YouTubeStandalone.android.js": {
       "id": 403
+    },
+    "react-native-mail/index.js": {
+      "id": 404
     }
   }
 }
