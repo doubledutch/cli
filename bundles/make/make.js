@@ -64,9 +64,13 @@ Promise.all(platforms.map(async platform => {
   fs.writeFileSync(`${bundleDir}/base.${platform}.${baseBundleVersion}.manifest`, JSON.stringify(manifest, null, 2))
 
   const bundle = fs.readFileSync(`${bundleDir}/base.${platform}.${baseBundleVersion}.bundle.js`, {encoding: 'utf8'})
-  fs.writeFileSync(`${bundleDir}/base.${platform}.${baseBundleVersion}.bundle.js`, `// DoubleDutch base bundle ${platform}.${baseBundleVersion}\n\n` + bundle.replace(/\n__r\(.+\);?/g, '\n'))
 
-  fs.renameSync(`${bundleDir}/base.${platform}.${baseBundleVersion}.bundle.js`, `${bundleDir}/base.${platform}.${baseBundleVersion}.bundle`)
+  const bundleJS = `// DoubleDutch base bundle ${platform}.${baseBundleVersion}\n\n`
+    + bundle.replace(/\n__r\(.+\);?/g, '\n')
+
+  fs.writeFileSync(`${bundleDir}/base.${platform}.${baseBundleVersion}.bundle.js`, bundleJS)
+
+  fs.renameSync(`${bundleDir}/base.${platform}.${baseBundleVersion}.bundle.js`, `${bundleDir}/base.${platform}.${baseBundleVersion}.manifest.bundle`)
 })).then(() => {
   console.log(`\n\n**************************************\n  Done\n**************************************\n\n`)
 })
