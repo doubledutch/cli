@@ -16,6 +16,7 @@
 
 const fs = require('fs')
 const { spawn } = require('child_process')
+const chalk = require('chalk')
 
 module.exports = function init(cmd, options) {
   assertFolderEmpty()
@@ -23,7 +24,11 @@ module.exports = function init(cmd, options) {
   chalk.blue('Cloning sample extension v2...')
   return new Promise(resolve => {
     spawn('git clone git@github.com:doubledutch/extension-sample.git --branch v2 --single-branch .', [], {shell: true, stdio: 'inherit'}).on('exit', () => {
-      resolve()
+      chalk.blue('Removing .git history')
+      spawn('rm -rf .git', [], {shell: true, stdio: 'inherit'}).on('exit', () => {
+        chalk.green('Sample project initialized 🌻')
+        resolve()
+      })
     })  
   })
 }
