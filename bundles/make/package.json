@@ -5,7 +5,7 @@
     "react-native": "0.59.3",
     "react-native-camera": "2.2.1",
     "react-native-mail": "3.0.7",
-    "react-native-permissions": "^1.1.1",
+    "react-native-permissions": "1.1.1",
     "react-native-video": "4.4.0",
     "react-native-youtube": "1.1.0",
     "rn-fetch-blob": "0.10.15"
