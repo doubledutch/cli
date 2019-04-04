@@ -82,6 +82,7 @@ async function doUpgrade() {
   await promisedExec('pushd mobile && npm uninstall @doubledutch/rn-client && npm install --save @doubledutch/rn-client@^5.0.0 ; popd')
   console.log(chalk.blue('removing babel-plugin-transform-runtime'))
   await promisedExec('pushd mobile && npm uninstall babel-plugin-transform-runtime ; popd')
+  await promisedExec('pushd mobile && npm uninstall --save-dev dd-rn-packager rnpm ; popd')
   console.log(chalk.blue('updating react & react-native'))
   await promisedExec('pushd mobile && npm uninstall react react-native && npm install --save --save-exact react@16.8.3 react-native@0.59.2 ; popd')
   console.log(chalk.blue('updating react-native-camera'))
