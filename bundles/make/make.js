@@ -66,7 +66,7 @@ Promise.all(platforms.map(async platform => {
   const bundle = fs.readFileSync(`${bundleDir}/base.${platform}.${baseBundleVersion}.bundle.js`, {encoding: 'utf8'})
 
   const bundleJS = `// DoubleDutch base bundle ${platform}.${baseBundleVersion}\n\n`
-    + bundle.replace(/\n__r\(.+\);?/g, '\n')
+    + massageBundle(bundle.replace(/\n__r\(.+\);?/g, '\n'))
 
   fs.writeFileSync(`${bundleDir}/base.${platform}.${baseBundleVersion}.bundle.js`, bundleJS)
 
@@ -74,3 +74,7 @@ Promise.all(platforms.map(async platform => {
 })).then(() => {
   console.log(`\n\n**************************************\n  Done\n**************************************\n\n`)
 })
+
+function massageBundle(bundle) {
+  return bundle.replace('{return self}', '{return typeof self==="undefined"?null:self}')
+}
