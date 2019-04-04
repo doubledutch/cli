@@ -1212,6 +1212,12 @@
     "react-native-mail/index.js": {
       "id": 404
     },
+    "react-native-permissions/index.js": {
+      "id": 405
+    },
+    "react-native-permissions/lib/permissions.android.js": {
+      "id": 406
+    },
     "__PLACEHOLDER__": {
       "id": 1000
     }

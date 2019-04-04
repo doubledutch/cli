@@ -1,17 +1,18 @@
 {
-  "version": "0.59.2",
+  "version": "0.59.3",
   "dependencies": {
     "react": "16.8.3",
-    "react-native": "0.59.2",
-    "react-native-camera": "2.1.1",
+    "react-native": "0.59.3",
+    "react-native-camera": "2.2.1",
     "react-native-mail": "3.0.7",
+    "react-native-permissions": "^1.1.1",
     "react-native-video": "4.4.0",
     "react-native-youtube": "1.1.0",
     "rn-fetch-blob": "0.10.15"
   },
   "devDependencies": {
-    "babel-jest": "24.5.0",
-    "jest": "24.5.0",
+    "babel-jest": "24.7.1",
+    "jest": "24.7.1",
     "metro": "0.53.1",
     "metro-react-native-babel-preset": "0.53.1",
     "react-test-renderer": "16.8.3",

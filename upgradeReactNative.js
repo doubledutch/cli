@@ -23,7 +23,7 @@ const { removeSync } = require('fs-extra')
 const { getCurrentExtension } = require('./utils')
 
 const oldBaseBundleVersion = '0.46.4'
-const baseBundleVersion = '0.59.2'
+const baseBundleVersion = '0.59.3'
 
 module.exports = function upgradeReactNative() {
   doUpgrade()
@@ -84,9 +84,9 @@ async function doUpgrade() {
   await promisedExec('pushd mobile && npm uninstall babel-plugin-transform-runtime ; popd')
   await promisedExec('pushd mobile && npm uninstall --save-dev dd-rn-packager rnpm ; popd')
   console.log(chalk.blue('updating react & react-native'))
-  await promisedExec('pushd mobile && npm uninstall react react-native && npm install --save --save-exact react@16.8.3 react-native@0.59.2 ; popd')
+  await promisedExec('pushd mobile && npm uninstall react react-native && npm install --save --save-exact react@16.8.3 react-native@0.59.3 ; popd')
   console.log(chalk.blue('updating react-native-camera'))
-  await promisedExec('pushd mobile && npm uninstall react-native-camera && npm install --save --save-exact react-native-camera@2.1.1 ; popd')
+  await promisedExec('pushd mobile && npm uninstall react-native-camera && npm install --save --save-exact react-native-camera@2.2.1 ; popd')
   console.log(chalk.blue('updating react-native-video'))
   await promisedExec('pushd mobile && npm uninstall react-native-video && npm install --save --save-exact react-native-video@4.4.0 ; popd')
   console.log(chalk.blue('updating react-native-youtube'))
