@@ -318,11 +318,8 @@
     "react-native/Libraries/Core/Devtools/parseErrorStack.js": {
       "id": 106
     },
-    "stacktrace-parser/index.js": {
+    "stacktrace-parser/dist/stack-trace-parser.umd.js": {
       "id": 107
-    },
-    "stacktrace-parser/lib/stacktrace-parser.js": {
-      "id": 108
     },
     "react-native/Libraries/Core/checkNativeVersion.js": {
       "id": 109

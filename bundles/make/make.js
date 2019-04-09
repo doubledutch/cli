@@ -1,5 +1,11 @@
 'use strict'
 
+// These are only included to make react native patch version changes backward compatible.
+// These arrays should be empty when creating a completely new bundle version that should not be
+// backward compatible with any previous version.
+// 0.59.3 ==> 0.59.4 backward compatibility.
+const skipIds = {android: [104], ios: [108]}
+
 const fs = require('fs')
 const rimraf = require('rimraf')
 
@@ -32,7 +38,8 @@ Promise.all(platforms.map(async platform => {
     if (!isExcluded) {
       const path = m.path.replace(`${__dirname}/node_modules/`, '')
       if (!manifest.modules[path]) {
-        manifest.modules[path] = {id: id++}
+        manifest.modules[path] = {id}
+        while (skipIds[platform].includes(++id));
       }
     }
 
