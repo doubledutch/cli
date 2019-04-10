@@ -1212,6 +1212,27 @@
     "react-native-permissions/lib/permissions.ios.js": {
       "id": 405
     },
+    "@react-native-community/async-storage/lib/index.js": {
+      "id": 406
+    },
+    "@react-native-community/async-storage/lib/AsyncStorage.js": {
+      "id": 407
+    },
+    "@react-native-community/async-storage/lib/hooks.js": {
+      "id": 408
+    },
+    "react-native-webview/index.js": {
+      "id": 409
+    },
+    "react-native-webview/lib/WebView.ios.js": {
+      "id": 410
+    },
+    "react-native-webview/lib/WebViewShared.js": {
+      "id": 411
+    },
+    "react-native-webview/lib/WebView.styles.js": {
+      "id": 412
+    },
     "__PLACEHOLDER__": {
       "id": 1000
     }
