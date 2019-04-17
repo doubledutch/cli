@@ -1233,6 +1233,12 @@
     "react-native-webview/lib/WebView.styles.js": {
       "id": 412
     },
+    "react-native-image-picker/index.js": {
+      "id": 413
+    },
+    "react-native-open-doc/index.js": {
+      "id": 414
+    },
     "__PLACEHOLDER__": {
       "id": 1000
     }
