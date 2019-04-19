@@ -78,17 +78,17 @@ async function doUpgrade() {
 
   // NOTE: These versions must be updated when we move to a new base bundle / React Native version.
 
-  console.log(chalk.blue('updating @doubledutch/rn-client to ^5.0.0'))
-  await promisedExec('pushd mobile && npm uninstall @doubledutch/rn-client && npm install --save @doubledutch/rn-client@^5.0.0 ; popd')
+  console.log(chalk.blue('updating @doubledutch/rn-client to ^5.0.1'))
+  await promisedExec('pushd mobile && npm uninstall @doubledutch/rn-client && npm install --save @doubledutch/rn-client@^5.0.1 ; popd')
   console.log(chalk.blue('removing babel-plugin-transform-runtime'))
   await promisedExec('pushd mobile && npm uninstall babel-plugin-transform-runtime ; popd')
   await promisedExec('pushd mobile && npm uninstall --save-dev dd-rn-packager rnpm ; popd')
   console.log(chalk.blue('updating react & react-native'))
-  await promisedExec('pushd mobile && npm uninstall react react-native && npm install --save --save-exact react@16.8.3 react-native@0.59.3 ; popd')
+  await promisedExec('pushd mobile && npm uninstall react react-native && npm install --save --save-exact react@16.8.3 react-native@0.59.4 ; popd')
   console.log(chalk.blue('updating react-native-camera'))
-  await promisedExec('pushd mobile && npm uninstall react-native-camera && npm install --save --save-exact react-native-camera@2.2.1 ; popd')
+  await promisedExec('pushd mobile && npm uninstall react-native-camera && npm install --save --save-exact react-native-camera@2.5.0 ; popd')
   console.log(chalk.blue('updating react-native-video'))
-  await promisedExec('pushd mobile && npm uninstall react-native-video && npm install --save --save-exact react-native-video@4.4.0 ; popd')
+  await promisedExec('pushd mobile && npm uninstall react-native-video && npm install --save --save-exact react-native-video@4.4.1 ; popd')
   console.log(chalk.blue('updating react-native-youtube'))
   await promisedExec('pushd mobile && npm uninstall react-native-youtube && npm install --save --save-exact react-native-youtube@1.1.0 ; popd')
   console.log(chalk.blue('updating react-native-fetch-blob to rn-fetch-blob'))
