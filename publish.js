@@ -186,7 +186,7 @@ async function publishBinary(accountConfig, packageJSON, cmd) {
       .set('x-firebase-storage-version', 'webjs/4.3.1')
       .set('authorization', `Firebase ${firebaseIdToken}`)
       .end((err, res) => {
-        if (err) reject(err)
+        if (err) return reject(err)
         if (!res.ok) reject(`Failed to upload binary: ${res.statusText}`)
         resolve(json)
       })
