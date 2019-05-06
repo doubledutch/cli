@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+require('global-agent/bootstrap')
 // Notify user of any updates to the CLI
 const updateNotifier = require('update-notifier')
 const pkg = require('./package.json')
