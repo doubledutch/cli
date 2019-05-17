@@ -35,7 +35,9 @@ async function current(platform, root) {
   })
 
   // Remove the bundle prelude and `require` definition, which are in the base bundle
-  const bundle = fs.readFileSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.js`, {encoding: 'utf8'})
+  const bundleJSPath = `./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle.js`
+  const bundle = fs.readFileSync(bundleJSPath, {encoding: 'utf8'})
+  fs.unlinkSync(bundleJSPath)
   const firstDefine = bundle.indexOf('\n__d')
   fs.writeFileSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle`, bundle.replace(/\/\/# sourceMappingURL\=.*/, ''))
 }
