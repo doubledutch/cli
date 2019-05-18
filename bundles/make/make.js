@@ -14,7 +14,7 @@ const { baseBundleVersion } = require('../../config')
 
 const bundleDir = `../${baseBundleVersion}`
 
-const reserveModuleIdsUpTo = 1000
+const baseModuleId = 1000
 
 console.log(`\n\n**************************************\n  Creating base bundles in ${bundleDir}\n**************************************\n\n`)
 
@@ -28,26 +28,32 @@ Promise.all(platforms.map(async platform => {
   let id = 1
 
   function processModuleFilter(m, i) {
+    if (m.path === `${__dirname}/base.js`) return true
+
     const isExcluded = [
       '__prelude__',
       `require-${__dirname}/base.js`,
       'source-map',
-      `${__dirname}/base.js`,
     ].includes(m.path) || m.path.endsWith('/node_modules/metro/src/lib/polyfills/require.js')
 
     if (!isExcluded) {
       const path = m.path.replace(`${__dirname}/node_modules/`, '')
       if (!manifest.modules[path]) {
         manifest.modules[path] = {id}
-        while (skipIds[platform].includes(++id));
+        ++id
+        while (skipIds[platform].includes(id) || id === baseModuleId) {
+          ++id
+        }
       }
     }
 
-    return ![`${__dirname}/base.js`, 'source-map'].includes(m.path)
+    return !['source-map'].includes(m.path)
   }
 
   function createModuleIdFactory() {
     return path => {
+      if (path === `${__dirname}/base.js`) return baseModuleId
+
       const sourcePath = path.replace(__dirname + '/node_modules/', '')
       if (manifest.modules[sourcePath]) {
         return manifest.modules[sourcePath].id
@@ -67,13 +73,13 @@ Promise.all(platforms.map(async platform => {
     createModuleIdFactory
   })
 
-  if (id <= reserveModuleIdsUpTo) manifest.modules.__PLACEHOLDER__ = { id: reserveModuleIdsUpTo }
+  manifest.modules.__BASE__ = { id: baseModuleId }
   fs.writeFileSync(`${bundleDir}/base.${platform}.${baseBundleVersion}.manifest`, JSON.stringify(manifest, null, 2))
 
   const bundle = fs.readFileSync(`${bundleDir}/base.${platform}.${baseBundleVersion}.bundle.js`, {encoding: 'utf8'})
 
   const bundleJS = `// DoubleDutch base bundle ${platform}.${baseBundleVersion}\n\n`
-    + massageBundle(bundle.replace(/\n__r\(.+\);?/g, '\n'))
+    + massageBundle(bundle.replace(/\n__r\(1000000000\);?/g, '\n'))
 
   fs.writeFileSync(`${bundleDir}/base.${platform}.${baseBundleVersion}.bundle.js`, bundleJS)
 

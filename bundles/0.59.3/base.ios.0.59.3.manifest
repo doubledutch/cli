@@ -1239,7 +1239,7 @@
     "react-native-open-doc/index.js": {
       "id": 414
     },
-    "__PLACEHOLDER__": {
+    "__BASE__": {
       "id": 1000
     }
   }
