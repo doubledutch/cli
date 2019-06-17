@@ -39,7 +39,7 @@ async function current(platform, root) {
   const bundle = fs.readFileSync(bundleJSPath, {encoding: 'utf8'})
   fs.unlinkSync(bundleJSPath)
   const firstDefine = bundle.indexOf('\n__d')
-  fs.writeFileSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle`, bundle.replace(/\/\/# sourceMappingURL\=.*/, ''))
+  fs.writeFileSync(`./build/bundle/index.${platform}.${config.baseBundleVersion}.manifest.bundle`, bundle.replace(/\n\/\/# sourceMappingURL\=data\:[^\n]*\n?/g, '\n'))
 }
 
 async function previous(root, extensionName) {
