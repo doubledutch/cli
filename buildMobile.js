@@ -69,6 +69,7 @@ async function previous(root, extensionName) {
   const packageJSON = fs.readFileSync(path.join(root, 'package.json'), {encoding: 'utf8'})
   const modifiedPackageJSON = packageJSON
     .replace(/"@doubledutch\/rn\-client": "[^"]*"/, '"@doubledutch/rn-client": "4.x"')
+    .replace(/"@doubledutch\/firebase\-connector": "[^"]*"/, '"@doubledutch/firebase-connector": "4.1.9-dev"')
     .replace(/"react": "[^"]*"/, '"react": "16.0.0-alpha.12"')
     .replace(/"react\-native": "[^"]*"/, '"react-native": "0.46.4"')
     .replace(/"react\-native\-camera": "[^"]*"/, '"react-native-camera": "0.10.0"')
